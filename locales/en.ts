@@ -1,4 +1,9 @@
 export default {
+  site: {
+    name: "Leonid Petrov — Senior Frontend Engineer",
+    description:
+      "Senior frontend engineer specializing in product interfaces, performance, and design systems.",
+  },
   nav: "Home",
   hero: {
     headline: "Senior Frontend Engineer for resilient product interfaces",
@@ -34,5 +39,20 @@ export default {
     linkedin: "LinkedIn",
     cv: "Download CV",
     placeholderNote: "GitHub/LinkedIn/CV links are placeholders until updated.",
+  },
+  contactForm: {
+    subtitle: "Tell me about your role or project and the outcomes you expect.",
+    nameLabel: "Name",
+    emailLabel: "Email",
+    messageLabel: "Message",
+    companyLabel: "Company",
+    submit: "Send message",
+    sending: "Sending...",
+    or: "or",
+    mailto: "Send via email",
+    success: "Thanks! I'll reply within 1–2 days.",
+    errorMissing: "Please fill out all fields.",
+    errorInvalid: "Please provide a valid email.",
+    errorSpam: "Submission blocked.",
   },
 } as const;

@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A" />
+      <stop offset="1" stop-color="#1E293B" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(950 120) rotate(135) scale(420 320)">
+      <stop stop-color="#38BDF8" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <rect x="80" y="110" width="1040" height="410" rx="32" fill="#0B1220" fill-opacity="0.65" stroke="#1E293B" />
+  <text x="140" y="230" fill="#E2E8F0" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="600">
+    Leonid Petrov
+  </text>
+  <text x="140" y="295" fill="#94A3B8" font-family="Inter, system-ui, sans-serif" font-size="28">
+    Senior Frontend Engineer
+  </text>
+  <text x="140" y="360" fill="#CBD5F5" font-family="Inter, system-ui, sans-serif" font-size="22">
+    Architecture · Performance · Accessibility · Design Systems
+  </text>
+  <text x="140" y="430" fill="#64748B" font-family="Inter, system-ui, sans-serif" font-size="18">
+    lvpjsdev@gmail.com · t.me/lvpjsdev
+  </text>
+</svg>

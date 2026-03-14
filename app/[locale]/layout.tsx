@@ -47,6 +47,7 @@ export async function generateMetadata({
   const languages = Object.fromEntries(
     locales.map((entry) => [entry, new URL(`/${entry}`, metadataBase).toString()]),
   ) as Record<Locale, string>;
+  const ogImage = new URL("/og.svg", metadataBase).toString();
 
   return {
     title: messages?.hero?.headline || "Platform Engineering",
@@ -64,6 +65,21 @@ export async function generateMetadata({
       url: canonical,
       type: "website",
       locale,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: messages?.site?.name ?? "Portfolio",
+        },
+      ],
+      siteName: messages?.site?.name,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: messages?.hero?.headline,
+      description: messages?.hero?.description,
+      images: [ogImage],
     },
   };
 }
