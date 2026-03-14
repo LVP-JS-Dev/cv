@@ -13,15 +13,8 @@ type Params = {
 export const generateStaticParams = getStaticParams;
 
 async function loadMessages(locale: Locale) {
-  const modules = await Promise.all([
-    import("@/locales/en"),
-    import("@/locales/ru"),
-  ]);
-  const dictionary = {
-    en: modules[0].default,
-    ru: modules[1].default,
-  } as const;
-  return dictionary[locale];
+  const localeModule = await import(`@/locales/${locale}`);
+  return localeModule.default;
 }
 
 /**
@@ -47,6 +40,8 @@ export async function generateMetadata({
   const languages = Object.fromEntries(
     locales.map((entry) => [entry, new URL(`/${entry}`, metadataBase).toString()]),
   ) as Record<Locale, string>;
+  const ogImage = new URL("/opengraph-image", metadataBase).toString();
+  const twitterImage = new URL("/twitter-image", metadataBase).toString();
 
   return {
     title: messages?.hero?.headline || "Platform Engineering",
@@ -64,6 +59,21 @@ export async function generateMetadata({
       url: canonical,
       type: "website",
       locale,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: messages?.site?.name ?? "Portfolio",
+        },
+      ],
+      siteName: messages?.site?.name,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: messages?.hero?.headline,
+      description: messages?.hero?.description,
+      images: [twitterImage],
     },
   };
 }

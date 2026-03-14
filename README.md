@@ -26,3 +26,4 @@ No automated tests are configured. Run `npm run lint` after installing dependenc
 - Each feature or fix is developed in its own git worktree.
 - Each meaningful change should be captured in a separate git commit.
 - Prefer small, atomic commits with clear messages.
+- New exported functions/components introduced in Phase C must include concise docstrings covering at least 80% of their logic for clarity.

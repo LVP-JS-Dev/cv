@@ -1,4 +1,9 @@
 export default {
+  site: {
+    name: "Леонид Петров — Senior Frontend Engineer",
+    description:
+      "Senior фронтенд‑инженер: продуктовые интерфейсы, производительность, дизайн‑системы.",
+  },
   nav: "Главная",
   hero: {
     headline: "Senior Frontend Engineer для надежных продуктовых интерфейсов",
@@ -34,5 +39,23 @@ export default {
     linkedin: "LinkedIn",
     cv: "Резюме",
     placeholderNote: "Ссылки GitHub/LinkedIn/резюме — плейсхолдеры до обновления.",
+  },
+  contactForm: {
+    subtitle: "Опиши роль или проект и желаемый результат — отвечу с оценкой и шагами.",
+    nameLabel: "Имя",
+    emailLabel: "Email",
+    messageLabel: "Сообщение",
+    companyLabel: "Компания",
+    submit: "Отправить",
+    sending: "Отправка...",
+    or: "или",
+    mailto: "Написать на почту",
+    success: "Спасибо! Отвечу в течение 1–2 дней.",
+    errorMissing: "Пожалуйста, заполните все поля.",
+    errorInvalid: "Укажите корректный email.",
+    errorSpam: "Отправка заблокирована.",
+    errorRate: "Слишком много запросов. Попробуйте позже.",
+    errorSend: "Не удалось отправить сообщение. Напишите на почту.",
+    errorFallback: "Отправка через форму не настроена. Используйте почту ниже.",
   },
 } as const;
