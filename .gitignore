@@ -25,6 +25,8 @@
 *.pem
 .cursor/
 .worktrees/
+next-env.d.ts
+test-results/
 
 # debug
 npm-debug.log*
