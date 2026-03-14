@@ -7,6 +7,9 @@ import { useI18n } from "@/locales/client";
 
 const initialState: ContactState = { status: "idle" };
 
+/**
+ * Submit button that reflects pending form state.
+ */
 function SubmitButton() {
   const { pending } = useFormStatus();
   const t = useI18n();
@@ -22,6 +25,9 @@ function SubmitButton() {
   );
 }
 
+/**
+ * Email contact form wired to the submitContact action.
+ */
 export default function ContactForm() {
   const [state, formAction] = useActionState(submitContact, initialState);
   const t = useI18n();

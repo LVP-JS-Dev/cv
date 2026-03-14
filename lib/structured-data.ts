@@ -1,3 +1,6 @@
+/**
+ * Builds JSON-LD metadata for a person profile.
+ */
 export function buildPersonJsonLd(person: {
   name: string;
   jobTitle: string;
@@ -13,6 +16,9 @@ export function buildPersonJsonLd(person: {
   };
 }
 
+/**
+ * Builds JSON-LD metadata for a website.
+ */
 export function buildWebsiteJsonLd(site: {
   name: string;
   url: string;

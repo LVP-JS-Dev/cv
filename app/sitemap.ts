@@ -3,6 +3,9 @@ import { locales } from "@/i18n/routing";
 
 export const revalidate = 3600;
 
+/**
+ * Generates a locale-aware sitemap using the configured site URL.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
   if (!baseUrl && process.env.NODE_ENV === "production") {

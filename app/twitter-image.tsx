@@ -8,6 +8,9 @@ export const size = {
 export const contentType = "image/png";
 export const runtime = "edge";
 
+/**
+ * Renders the Twitter image for card previews.
+ */
 export default function TwitterImage() {
   return new ImageResponse(
     (

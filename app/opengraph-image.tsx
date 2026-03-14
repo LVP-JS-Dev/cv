@@ -8,6 +8,9 @@ export const size = {
 export const contentType = "image/png";
 export const runtime = "edge";
 
+/**
+ * Renders the Open Graph image for social previews.
+ */
 export default function OpenGraphImage() {
   return new ImageResponse(
     (

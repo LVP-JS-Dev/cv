@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 
+/**
+ * Builds robots.txt rules and references the sitemap when allowed.
+ */
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
   if (!baseUrl && process.env.NODE_ENV === "production") {

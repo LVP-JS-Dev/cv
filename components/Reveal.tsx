@@ -9,6 +9,9 @@ type RevealProps = {
   delay?: number;
 };
 
+/**
+ * Reveals children when they enter the viewport with optional delay.
+ */
 export default function Reveal({
   children,
   className,

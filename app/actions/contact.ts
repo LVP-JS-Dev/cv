@@ -44,6 +44,9 @@ function isRateLimited(clientId: string) {
   return false;
 }
 
+/**
+ * Validates form data, enforces rate limits, and sends a contact email via Resend.
+ */
 export async function submitContact(
   _prevState: ContactState,
   formData: FormData,
