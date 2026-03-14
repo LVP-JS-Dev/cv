@@ -106,6 +106,11 @@ export default async function ProjectDetailPage({
   const displayTitle = project.anonymous
     ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
     : project.title;
+  const listSections = [
+    { key: "overview", title: t("caseStudy.overview"), items: project.overview },
+    { key: "outcomes", title: t("caseStudy.outcomes"), items: project.outcomes },
+    { key: "challenges", title: t("caseStudy.challenges"), items: project.challenges },
+  ];
 
   return (
     <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-12 text-slate-100">
@@ -131,17 +136,14 @@ export default async function ProjectDetailPage({
         <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
       </header>
 
-      <CaseStudySection title={t("caseStudy.overview")}>
-        <CaseStudyList items={project.overview} listKey={`${project.slug}-overview`} />
-      </CaseStudySection>
-
-      <CaseStudySection title={t("caseStudy.outcomes")}>
-        <CaseStudyList items={project.outcomes} listKey={`${project.slug}-outcomes`} />
-      </CaseStudySection>
-
-      <CaseStudySection title={t("caseStudy.challenges")}>
-        <CaseStudyList items={project.challenges} listKey={`${project.slug}-challenges`} />
-      </CaseStudySection>
+      {listSections.map((section) => (
+        <CaseStudySection key={section.key} title={section.title}>
+          <CaseStudyList
+            items={section.items}
+            listKey={`${project.slug}-${section.key}`}
+          />
+        </CaseStudySection>
+      ))}
 
       <CaseStudySection title={t("caseStudy.stack")}>
         <div className="flex flex-wrap gap-2 text-xs text-slate-400">
