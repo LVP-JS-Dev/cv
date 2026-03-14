@@ -1,3 +1,6 @@
+/**
+ * English locale dictionary for UI strings and case study labels.
+ */
 export default {
   site: {
     name: "Leonid Petrov — Senior Frontend Engineer",
@@ -40,17 +43,6 @@ export default {
     cv: "Download CV",
     placeholderNote: "GitHub/LinkedIn/CV links are placeholders until updated.",
   },
-  projectDetail: {
-    overview: "Overview",
-    outcomes: "Outcomes",
-    challenges: "Challenges",
-    stack: "Tech stack",
-    links: "Links",
-    confidentialBadge: "Confidential",
-    confidentialTitle: "Confidential project",
-    back: "Back to projects",
-    viewProject: "View project",
-  },
   contactForm: {
     subtitle: "Tell me about your role or project and the outcomes you expect.",
     nameLabel: "Name",
@@ -68,5 +60,17 @@ export default {
     errorRate: "Too many requests. Please try again later.",
     errorSend: "Message could not be delivered. Please try email instead.",
     errorFallback: "Email delivery is not configured. Use the mail link below.",
+  },
+  caseStudy: {
+    title: "Case study",
+    view: "View case study",
+    back: "Back to projects",
+    overview: "Overview",
+    outcomes: "Outcomes",
+    challenges: "Challenges",
+    stack: "Stack notes",
+    links: "Links",
+    confidential: "Confidential client",
+    notFound: "Case study not found",
   },
 } as const;

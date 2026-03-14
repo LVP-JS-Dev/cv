@@ -1,3 +1,6 @@
+/**
+ * Russian locale dictionary for UI strings and case study labels.
+ */
 export default {
   site: {
     name: "Леонид Петров — Senior Frontend Engineer",
@@ -40,17 +43,6 @@ export default {
     cv: "Резюме",
     placeholderNote: "Ссылки GitHub/LinkedIn/резюме — плейсхолдеры до обновления.",
   },
-  projectDetail: {
-    overview: "Обзор",
-    outcomes: "Результаты",
-    challenges: "Сложности",
-    stack: "Технологии",
-    links: "Ссылки",
-    confidentialBadge: "Конфиденциально",
-    confidentialTitle: "Конфиденциальный проект",
-    back: "К проектам",
-    viewProject: "Посмотреть проект",
-  },
   contactForm: {
     subtitle: "Опиши роль или проект и желаемый результат — отвечу с оценкой и шагами.",
     nameLabel: "Имя",
@@ -68,5 +60,17 @@ export default {
     errorRate: "Слишком много запросов. Попробуйте позже.",
     errorSend: "Не удалось отправить сообщение. Напишите на почту.",
     errorFallback: "Отправка через форму не настроена. Используйте почту ниже.",
+  },
+  caseStudy: {
+    title: "Кейс",
+    view: "Смотреть кейс",
+    back: "Назад к проектам",
+    overview: "Обзор",
+    outcomes: "Результаты",
+    challenges: "Сложности",
+    stack: "Стек",
+    links: "Ссылки",
+    confidential: "Конфиденциальный клиент",
+    notFound: "Кейс не найден",
   },
 } as const;
