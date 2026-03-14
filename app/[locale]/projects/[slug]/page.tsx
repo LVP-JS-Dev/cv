@@ -1,19 +1,36 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { setStaticParamsLocale } from "next-international/server";
 import { contentProjects } from "@/content/projects";
 import { getI18n } from "@/locales/server";
-import { locales, type Locale } from "@/i18n/routing";
+import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
 type Params = {
   locale: string;
   slug: string;
 };
 
+type CaseStudySectionProps = Readonly<{
+  title: string;
+  children: React.ReactNode;
+}>;
+
+function CaseStudySection({ title, children }: CaseStudySectionProps) {
+  return (
+    <section className="space-y-4">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      {children}
+    </section>
+  );
+}
+
 /**
  * Prebuilds static project routes based on known project slugs.
  */
 export function generateStaticParams() {
-  return contentProjects.map((project) => ({ slug: project.slug }));
+  return locales.flatMap((locale) =>
+    contentProjects.map((project) => ({ locale, slug: project.slug })),
+  );
 }
 
 /**
@@ -27,7 +44,8 @@ export async function generateMetadata({
   const { locale: localeParam, slug } = await params;
   const locale = locales.includes(localeParam as Locale)
     ? (localeParam as Locale)
-    : ("en" as Locale);
+    : defaultLocale;
+  setStaticParamsLocale(locale);
   const t = await getI18n();
   const project = contentProjects.find((item) => item.slug === slug);
 
@@ -62,7 +80,7 @@ export default async function ProjectDetailPage({
   if (!locales.includes(locale)) {
     notFound();
   }
-
+  setStaticParamsLocale(locale);
   const t = await getI18n();
   const project = contentProjects.find((item) => item.slug === slug);
 
@@ -98,35 +116,31 @@ export default async function ProjectDetailPage({
         <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
       </header>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">{t("caseStudy.overview")}</h2>
+      <CaseStudySection title={t("caseStudy.overview")}>
         <ul className="list-disc space-y-2 pl-5 text-slate-300">
           {project.overview.map((item, index) => (
             <li key={`${project.slug}-overview-${index}`}>{item}</li>
           ))}
         </ul>
-      </section>
+      </CaseStudySection>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">{t("caseStudy.outcomes")}</h2>
+      <CaseStudySection title={t("caseStudy.outcomes")}>
         <ul className="list-disc space-y-2 pl-5 text-slate-300">
           {project.outcomes.map((item, index) => (
             <li key={`${project.slug}-outcomes-${index}`}>{item}</li>
           ))}
         </ul>
-      </section>
+      </CaseStudySection>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">{t("caseStudy.challenges")}</h2>
+      <CaseStudySection title={t("caseStudy.challenges")}>
         <ul className="list-disc space-y-2 pl-5 text-slate-300">
           {project.challenges.map((item, index) => (
             <li key={`${project.slug}-challenges-${index}`}>{item}</li>
           ))}
         </ul>
-      </section>
+      </CaseStudySection>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">{t("caseStudy.stack")}</h2>
+      <CaseStudySection title={t("caseStudy.stack")}>
         <div className="flex flex-wrap gap-2 text-xs text-slate-400">
           {project.tech.map((tech) => (
             <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
@@ -139,11 +153,10 @@ export default async function ProjectDetailPage({
             <li key={`${project.slug}-stack-${index}`}>{item}</li>
           ))}
         </ul>
-      </section>
+      </CaseStudySection>
 
       {project.links.length > 0 ? (
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">{t("caseStudy.links")}</h2>
+        <CaseStudySection title={t("caseStudy.links")}>
           <div className="flex flex-wrap gap-3">
             {project.links.map((link, index) => (
               <Link
@@ -155,7 +168,7 @@ export default async function ProjectDetailPage({
               </Link>
             ))}
           </div>
-        </section>
+        </CaseStudySection>
       ) : null}
     </main>
   );

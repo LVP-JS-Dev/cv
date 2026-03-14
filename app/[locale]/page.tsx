@@ -196,8 +196,8 @@ export default async function LocaleHome({
         <h2 className="text-2xl font-semibold text-white">{t("sections.engineeringQuality")}</h2>
         <p className="text-slate-300">{t("sections.engineeringQualityDescription")}</p>
         <ul className="list-disc space-y-2 pl-5 text-slate-300">
-          {qualityPoints.map((point) => (
-            <li key={point}>{point}</li>
+          {qualityPoints.map((point, index) => (
+            <li key={`quality-${index}`}>{point}</li>
           ))}
         </ul>
       </Reveal>
