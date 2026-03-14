@@ -82,9 +82,15 @@ export default function ContactForm() {
             ? t("contactForm.success")
             : state.error === "spam"
               ? t("contactForm.errorSpam")
+              : state.error === "rate"
+                ? t("contactForm.errorRate")
               : state.error === "invalid"
                 ? t("contactForm.errorInvalid")
-                : t("contactForm.errorMissing")}
+                : state.error === "send"
+                  ? t("contactForm.errorSend")
+                  : state.error === "fallback"
+                    ? t("contactForm.errorFallback")
+                  : t("contactForm.errorMissing")}
         </p>
       ) : null}
     </form>

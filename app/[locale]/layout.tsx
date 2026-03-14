@@ -13,15 +13,8 @@ type Params = {
 export const generateStaticParams = getStaticParams;
 
 async function loadMessages(locale: Locale) {
-  const modules = await Promise.all([
-    import("@/locales/en"),
-    import("@/locales/ru"),
-  ]);
-  const dictionary = {
-    en: modules[0].default,
-    ru: modules[1].default,
-  } as const;
-  return dictionary[locale];
+  const localeModule = await import(`@/locales/${locale}`);
+  return localeModule.default;
 }
 
 /**

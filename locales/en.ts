@@ -54,5 +54,8 @@ export default {
     errorMissing: "Please fill out all fields.",
     errorInvalid: "Please provide a valid email.",
     errorSpam: "Submission blocked.",
+    errorRate: "Too many requests. Please try again later.",
+    errorSend: "Message could not be delivered. Please try email instead.",
+    errorFallback: "Email delivery is not configured. Use the mail link below.",
   },
 } as const;

@@ -1,17 +1,47 @@
 "use server";
 
+import { headers } from "next/headers";
+
 export type ContactState = {
   status: "idle" | "success" | "error";
-  error?: "spam" | "missing" | "invalid";
+  error?: "spam" | "missing" | "invalid" | "rate" | "send" | "fallback";
 };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
 
 function normalize(value: FormDataEntryValue | null) {
   if (typeof value !== "string") {
     return "";
   }
   return value.trim();
+}
+
+async function getClientId() {
+  const headerList = await headers();
+  const header = headerList.get("x-forwarded-for") ?? "";
+  const ip = header.split(",")[0]?.trim();
+  return ip || "unknown";
+}
+
+function isRateLimited(clientId: string) {
+  const now = Date.now();
+  const entry = rateLimit.get(clientId);
+
+  if (!entry || entry.resetAt < now) {
+    rateLimit.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+
+  entry.count += 1;
+  rateLimit.set(clientId, entry);
+  return false;
 }
 
 export async function submitContact(
@@ -27,12 +57,43 @@ export async function submitContact(
     return { status: "error", error: "spam" };
   }
 
+  if (isRateLimited(await getClientId())) {
+    return { status: "error", error: "rate" };
+  }
+
   if (!name || !email || !message) {
     return { status: "error", error: "missing" };
   }
 
   if (!EMAIL_PATTERN.test(email)) {
     return { status: "error", error: "invalid" };
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  const contactTo = process.env.CONTACT_TO;
+  if (!apiKey || !contactTo) {
+    return { status: "error", error: "fallback" };
+  }
+
+  const contactFrom =
+    process.env.CONTACT_FROM ?? "Portfolio <onboarding@resend.dev>";
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: contactFrom,
+      to: contactTo,
+      subject: `Portfolio contact: ${name}`,
+      reply_to: email,
+      text: message,
+    }),
+  });
+
+  if (!response.ok) {
+    return { status: "error", error: "send" };
   }
 
   return { status: "success" };
