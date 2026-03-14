@@ -1,144 +1,132 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getI18n } from "@/locales/server";
 import { contentProjects } from "@/content/projects";
-import { defaultLocale, locales, type Locale } from "@/i18n/routing";
+import { getI18n } from "@/locales/server";
+import { locales, type Locale } from "@/i18n/routing";
 
 type Params = {
   locale: string;
   slug: string;
 };
 
-const getProjectBySlug = (slug: string) =>
-  contentProjects.find((project) => project.slug === slug);
-
 /**
- * Builds all available locale/slug pairs for static rendering.
+ * Prebuilds static project routes based on known project slugs.
  */
-export async function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    contentProjects.map((project) => ({
-      locale,
-      slug: project.slug,
-    })),
-  );
+export function generateStaticParams() {
+  return contentProjects.map((project) => ({ slug: project.slug }));
 }
 
 /**
- * Derives metadata for a project detail page based on locale and slug.
+ * Generates per-project metadata (title/description/OG) for case studies.
  */
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const locale = locales.includes(params.locale as Locale)
-    ? (params.locale as Locale)
-    : defaultLocale;
-  const project = getProjectBySlug(params.slug);
-  if (!project) {
-    return {
-      title: "Project",
-      description: "Project details",
-    };
-  }
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { locale: localeParam, slug } = await params;
+  const locale = locales.includes(localeParam as Locale)
+    ? (localeParam as Locale)
+    : ("en" as Locale);
   const t = await getI18n();
-  const industryTag = project.industry ? ` — ${project.industry}` : "";
+  const project = contentProjects.find((item) => item.slug === slug);
+
+  if (!project) {
+    return { title: t("caseStudy.notFound") };
+  }
+
   const title = project.anonymous
-    ? `${t("projectDetail.confidentialTitle")}${industryTag}`
+    ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
     : project.title;
-  const baseUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com");
-  const canonical = new URL(`/${locale}/projects/${project.slug}`, baseUrl).toString();
 
   return {
     title,
     description: project.summary,
-    alternates: {
-      canonical,
-    },
     openGraph: {
       title,
       description: project.summary,
-      url: canonical,
       type: "article",
       locale,
-    },
-    twitter: {
-      title,
-      description: project.summary,
     },
   };
 }
 
 /**
- * Renders a localized project detail screen using the requested slug.
+ * Renders the localized project case study view for a given slug.
  */
-export default async function ProjectDetail({ params }: { params: Params }) {
-  const locale = locales.includes(params.locale as Locale)
-    ? (params.locale as Locale)
-    : defaultLocale;
-  const project = getProjectBySlug(params.slug);
-  if (!project) {
+export default async function ProjectDetailPage({
+  params,
+}: Readonly<{ params: Promise<Params> }>) {
+  const { locale: localeParam, slug } = await params;
+  const locale = localeParam as Locale;
+  if (!locales.includes(locale)) {
     notFound();
   }
 
   const t = await getI18n();
-  const projectLink = `/${locale}/projects/${project.slug}`;
-  const industryLabel = project.industry ? project.industry : null;
+  const project = contentProjects.find((item) => item.slug === slug);
+
+  if (!project) {
+    notFound();
+  }
+
+  const displayTitle = project.anonymous
+    ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
+    : project.title;
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 py-12 text-slate-100">
-      <section className="space-y-4">
-        <div className="flex items-center gap-3">
-          {project.anonymous && (
-            <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-amber-200">
-              {t("projectDetail.confidentialBadge")}
-            </span>
-          )}
-          {industryLabel && (
-            <span className="text-xs uppercase tracking-[0.3em] text-slate-400">
-              {industryLabel}
-            </span>
-          )}
-        </div>
+    <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-12 text-slate-100">
+      <Link
+        href={`/${locale}#projects`}
+        className="text-sm uppercase tracking-[0.3em] text-slate-400"
+      >
+        {t("caseStudy.back")}
+      </Link>
+      <header className="space-y-4">
         <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
           {project.period} · {project.role}
         </p>
-        <h1 className="text-4xl font-semibold text-white">
-          {project.title}
-        </h1>
-        <p className="text-lg text-slate-300 max-w-3xl">{project.summary}</p>
-        <p className="text-sm uppercase tracking-[0.4em] text-slate-400">
-          {project.impact}
-        </p>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-white">{t("projectDetail.overview")}</h2>
-        <div className="space-y-2 text-slate-300">
-          {project.overview.map((item) => (
-            <p key={item}>{item}</p>
-          ))}
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-4xl font-semibold text-white">{displayTitle}</h1>
+          {project.anonymous ? (
+            <span className="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-300">
+              {t("caseStudy.confidential")}
+            </span>
+          ) : null}
         </div>
-      </section>
+        <p className="text-lg text-slate-300">{project.summary}</p>
+        <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
+      </header>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-white">{t("projectDetail.outcomes")}</h2>
-        <div className="space-y-2 text-slate-300">
-          {project.outcomes.map((item) => (
-            <p key={item}>{item}</p>
+        <h2 className="text-2xl font-semibold">{t("caseStudy.overview")}</h2>
+        <ul className="list-disc space-y-2 pl-5 text-slate-300">
+          {project.overview.map((item, index) => (
+            <li key={`${project.slug}-overview-${index}`}>{item}</li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-white">{t("projectDetail.challenges")}</h2>
-        <div className="space-y-2 text-slate-300">
-          {project.challenges.map((item) => (
-            <p key={item}>{item}</p>
+        <h2 className="text-2xl font-semibold">{t("caseStudy.outcomes")}</h2>
+        <ul className="list-disc space-y-2 pl-5 text-slate-300">
+          {project.outcomes.map((item, index) => (
+            <li key={`${project.slug}-outcomes-${index}`}>{item}</li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold text-white">{t("projectDetail.stack")}</h2>
+        <h2 className="text-2xl font-semibold">{t("caseStudy.challenges")}</h2>
+        <ul className="list-disc space-y-2 pl-5 text-slate-300">
+          {project.challenges.map((item, index) => (
+            <li key={`${project.slug}-challenges-${index}`}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">{t("caseStudy.stack")}</h2>
         <div className="flex flex-wrap gap-2 text-xs text-slate-400">
           {project.tech.map((tech) => (
             <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
@@ -147,35 +135,28 @@ export default async function ProjectDetail({ params }: { params: Params }) {
           ))}
         </div>
         <ul className="list-disc space-y-2 pl-5 text-slate-300">
-          {project.stackNotes.map((note) => (
-            <li key={note}>{note}</li>
+          {project.stackNotes.map((item, index) => (
+            <li key={`${project.slug}-stack-${index}`}>{item}</li>
           ))}
         </ul>
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-2xl font-semibold text-white">{t("projectDetail.links")}</h2>
-        <div className="flex flex-wrap gap-3 text-sm text-slate-300">
-          {project.links.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href === "#" ? projectLink : link.href}
-              className="rounded-full border border-slate-800 px-4 py-2 text-slate-300 underline-offset-2 hover:border-slate-600"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <div>
-        <Link
-          href={`/${locale}/#projects`}
-          className="text-sm uppercase tracking-[0.4em] text-slate-400"
-        >
-          {t("projectDetail.back")}
-        </Link>
-      </div>
+      {project.links.length > 0 ? (
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">{t("caseStudy.links")}</h2>
+          <div className="flex flex-wrap gap-3">
+            {project.links.map((link, index) => (
+              <Link
+                key={`${project.slug}-link-${index}`}
+                href={link.href}
+                className="text-slate-300 underline underline-offset-2"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

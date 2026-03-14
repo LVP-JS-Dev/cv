@@ -1,5 +1,5 @@
 /**
- * External label/url pair used for project call-to-action links.
+ * External or internal link displayed on a project case study.
  */
 export type ProjectLink = {
   label: string;
@@ -7,58 +7,56 @@ export type ProjectLink = {
 };
 
 /**
- * Describes the structured data for a single highlighted project.
+ * Case study metadata and narrative content for project detail pages.
  */
 export type Project = {
-  slug: string;
   title: string;
+  slug: string;
   summary: string;
   impact: string;
   tech: string[];
-  stackNotes: string[];
+  period: string;
+  role: string;
   overview: string[];
   outcomes: string[];
   challenges: string[];
-  period: string;
-  role: string;
-  anonymous?: boolean;
+  stackNotes: string[];
   industry?: string;
+  anonymous?: boolean;
   links: ProjectLink[];
 };
 
 /**
- * Curated list of portfolio projects surfaced on the site.
+ * Curated list of projects shown on the homepage and detail pages.
  */
 export const contentProjects: Project[] = [
   {
-    slug: "biometric-kyc",
     title: "Biometric KYC / Liveness Verification",
+    slug: "biometric-kyc-liveness",
     role: "Senior Fullstack Developer",
     period: "2024 — 2025",
     summary:
-      "Built an iframe widget with cross‑browser getUserMedia support and optimized real‑time video streaming over WebSocket.",
+      "Built an iframe widget with cross-browser getUserMedia support and optimized real-time video streaming over WebSocket.",
     impact: "Latency 250ms → 150ms • 95%+ success rate",
-    industry: "Fintech",
     tech: ["React", "TypeScript", "WebSocket", "MediaStream"],
     overview: [
-      "Shard-safe iframe adapter for remote verification flows across partner portals.",
-      "Custom media capture stack with retries for low-end browsers and payment desks.",
-      "Server-side WebSocket pipeline with RTP muxing to comply with security policies.",
+      "Designed a secure in-app verification flow for high-volume onboarding.",
+      "Embedded the experience via iframe to fit multiple partner products.",
     ],
     outcomes: [
-      "Latency reduced from ~250ms to 150ms on average, increasing conversion.",
-      "95%+ verification success despite spotty connectivity through defensive buffering.",
-      "Auditable streams that satisfied internal fraud and compliance reviews.",
+      "Reduced streaming latency while improving verification completion.",
+      "Raised success rate with clearer guidance and real-time feedback.",
     ],
     challenges: [
-      "Ensuring getUserMedia support inside diverse iframe hosts with restrictive CSP.",
-      "Adapting to mobile carriers that aggressively throttle WebSocket traffic.",
-      "Coordinating with ops on securing sensitive biometric assets in flight and at rest.",
+      "Cross-browser MediaStream support and permissions UX.",
+      "Consistent video quality over variable network conditions.",
     ],
     stackNotes: [
-      "WebSocket pipeline with adaptive frame rates to stay within detection thresholds.",
-      "MediaStream polyfills for legacy Safari and embedded WebView shells.",
+      "Used WebSocket backpressure handling to stabilize streams.",
+      "Added PostMessage bridge for host app integration.",
     ],
+    industry: "Fintech identity",
+    anonymous: true,
     links: [
       {
         label: "Case study (placeholder)",
@@ -67,31 +65,31 @@ export const contentProjects: Project[] = [
     ],
   },
   {
-    slug: "ai-audio-cleanup",
     title: "AI Audio Cleanup Marketing Site",
+    slug: "ai-audio-cleanup-site",
     role: "Senior Fullstack Developer",
     period: "2024",
     summary:
       "Delivered a Next.js landing page with interactive waveform comparison and automated CI/CD deployment.",
     impact: "PageSpeed 95+ mobile",
-    industry: "Audio",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "CI/CD"],
     overview: [
-      "Crafted live waveform comparators with Harmony.js and custom Web Audio graph nodes.",
-      "Iterated on SEO copies with analytics-backed copy testing to match brand tone.",
+      "Built a performance-first marketing site with product storytelling.",
+      "Interactive before/after audio player to prove quality.",
     ],
     outcomes: [
-      "PageSpeed Insights scores improved to 95+ on mobile and desktop.",
-      "Automated CI/CD tests and visual regression guardrails added before promo pushes.",
+      "Achieved strong mobile performance scores and fast load times.",
+      "Improved conversion via clearer product differentiation.",
     ],
     challenges: [
-      "Keeping interactive audio previews performant while maintaining responsive layout.",
-      "Integrating third-party marketing APIs without bloating the main bundle.",
+      "Rendering audio waveforms efficiently on mobile devices.",
+      "Balancing media-rich content with performance budgets.",
     ],
     stackNotes: [
-      "Dynamic imports and layout shifts avoided with explicit width/height hints.",
-      "CI scripts run on CircleCI with Storybook snapshots for marketing content blocks.",
+      "Optimized assets with Next.js image and font tooling.",
+      "Automated deployments via CI/CD pipelines.",
     ],
+    industry: "AI SaaS",
     links: [
       {
         label: "Case study (placeholder)",
@@ -100,32 +98,32 @@ export const contentProjects: Project[] = [
     ],
   },
   {
-    slug: "mobile-credit-flow",
     title: "Mobile Credit Application Flow",
+    slug: "mobile-credit-application",
     role: "Senior Frontend Developer",
     period: "2023",
     summary:
       "Implemented a WebView-ready React flow for a banking credit product and maintained a shared UI library.",
     impact: "12+ shared components across 5+ products",
-    industry: "Fintech",
     tech: ["React", "TypeScript", "Redux", "Webpack"],
-    anonymous: true,
     overview: [
-      "Ported the progressive balance sheet walkthrough to work inside multiple banking WebViews.",
-      "Standardized the shared component library and enforced theming via CSS variables.",
+      "Built a multi-step credit application inside mobile WebViews.",
+      "Aligned UX with internal design system and compliance rules.",
     ],
     outcomes: [
-      "Platform stability improved for 5+ localized customers thanks to the shared flow.",
-      "Design tokens adoption across mobile and web teams reduced duplication.",
+      "Reusable component library adopted by multiple teams.",
+      "Shorter time-to-release for new credit flows.",
     ],
     challenges: [
-      "Handling frequent WebView memory resets without losing user progress.",
-      "Synchronizing Redux state between native containers and the React flow.",
+      "Handling WebView constraints on iOS and Android.",
+      "Legacy migration from class components to hooks.",
     ],
     stackNotes: [
-      "Redux middleware bridged native messaging and web interactions.",
-      "Webpack builds optimized for low-memory class devices at the time.",
+      "Introduced memoization to reduce re-renders.",
+      "Improved build times by tuning Webpack config.",
     ],
+    industry: "Banking",
+    anonymous: true,
     links: [
       {
         label: "Case study (placeholder)",
@@ -134,32 +132,32 @@ export const contentProjects: Project[] = [
     ],
   },
   {
-    slug: "hr-analytics-platform",
     title: "HR Meetings Analytics Platform",
+    slug: "hr-meetings-analytics",
     role: "Lead Development Engineer",
     period: "2022",
     summary:
       "Led a web + mobile experience for HR meeting analytics and shipped an admin panel for operations teams.",
     impact: "Unified web + mobile UX",
-    industry: "HR Tech",
     tech: ["React", "React Native", "TypeScript", "Node.js"],
-    anonymous: true,
     overview: [
-      "Coordinated shared component library across web and React Native shells.",
-      "Designed analytics dashboards and embedded mobile widgets for HR teams.",
+      "Unified web and mobile experience for HR analytics workflows.",
+      "Delivered admin tooling for HR operations visibility.",
     ],
     outcomes: [
-      "Shipment of cohesive HR meeting analytics dashboards for hybrid products.",
-      "Reduced onboarding friction for ops with a unified admin experience.",
+      "Consistent UX across platforms and reduced training overhead.",
+      "Clear analytics views for decision makers.",
     ],
     challenges: [
-      "Balancing analytics density with mobile display constraints.",
-      "Maintaining sync between mobile-native and web-specific reporting views.",
+      "Coordinating releases across web and mobile clients.",
+      "Building analytics UI on top of legacy APIs.",
     ],
     stackNotes: [
-      "Node.js APIs served combined analytics from mobile and web sources.",
-      "Shared design tokens ensured parity between React and React Native styles.",
+      "Shared UI patterns between React and React Native.",
+      "Maintained >80% test coverage on core flows.",
     ],
+    industry: "HR Tech",
+    anonymous: true,
     links: [
       {
         label: "Case study (placeholder)",
@@ -168,32 +166,32 @@ export const contentProjects: Project[] = [
     ],
   },
   {
-    slug: "corporate-onboarding",
     title: "Corporate Banking Onboarding",
+    slug: "corporate-banking-onboarding",
     role: "JavaScript Developer",
     period: "2021",
     summary:
       "Built onboarding flows for legal entities and added Cypress E2E coverage for critical scenarios.",
     impact: "Initial load time -40%",
-    industry: "Banking",
     tech: ["React", "Redux", "Redux-Saga", "Cypress"],
-    anonymous: true,
     overview: [
-      "Delivered entity onboarding journeys with multi-step identity verification.",
-      "Automated testing in Cypress guarding regulatory scenarios.",
+      "Implemented onboarding flows for legal entities in a banking portal.",
+      "Added E2E regression coverage for critical scenarios.",
     ],
     outcomes: [
-      "Initial load time cut by 40% improving first impression metrics.",
-      "End-to-end coverage for risk-sensitive flows and audit support.",
+      "Faster onboarding with improved initial load time.",
+      "Higher confidence in releases via E2E coverage.",
     ],
     challenges: [
-      "Coordinating secure data handling during onboarding with compliance teams.",
-      "Keeping progressive onboarding performant across countries with strict CSP.",
+      "Optimizing bundle size without breaking legacy flows.",
+      "Coordinating front-end changes with backend requirements.",
     ],
     stackNotes: [
-      "Redux-Saga orchestrated remote validation calls and retries.",
-      "Cypress suites captured critical regression paths for legal teams.",
+      "Introduced code splitting for initial load reduction.",
+      "Built Cypress suites for onboarding flows.",
     ],
+    industry: "Enterprise banking",
+    anonymous: true,
     links: [
       {
         label: "Case study (placeholder)",
@@ -202,31 +200,31 @@ export const contentProjects: Project[] = [
     ],
   },
   {
-    slug: "crm-metrics-dashboard",
     title: "Internal CRM Metrics Dashboard",
+    slug: "internal-crm-metrics",
     role: "Fullstack Developer",
     period: "2020",
     summary:
       "Built internal CRM analytics dashboards and a BFF layer to power sales operations.",
     impact: "Improved metrics visibility",
-    industry: "SaaS",
     tech: ["React", "Node.js", "Express", "TypeScript"],
     overview: [
-      "Built React dashboards with data visualizations and contextual insights for ops.",
-      "Delivered BFF services aggregating CRM metrics from multiple data sources.",
+      "Created dashboards for sales operations and CRM analytics.",
+      "Implemented a BFF layer to simplify data access.",
     ],
     outcomes: [
-      "Operations teams gained unified visibility into CRM performance.",
-      "Dashboard refresh times improved with strategic caching.",
+      "Faster reporting cycles with centralized metrics.",
+      "Improved visibility across sales funnels.",
     ],
     challenges: [
-      "Sourcing consistent metrics from legacy CRM APIs.",
-      "Balancing real-time pushes with strict SLA constraints.",
+      "Aggregating metrics from multiple services.",
+      "Maintaining performance with growing datasets.",
     ],
     stackNotes: [
-      "Express BFF normalized disparate CRM endpoints into GraphQL-like responses.",
-      "React charts rendered with memoized selectors to avoid re-renders.",
+      "Built REST-based BFF for consistent data access.",
+      "Optimized dashboard rendering for large tables.",
     ],
+    industry: "SaaS CRM",
     links: [
       {
         label: "Case study (placeholder)",
