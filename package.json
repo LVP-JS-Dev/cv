@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "next": "16.1.6",
-    "next-intl": "^3.0.0",
+    "next-international": "^0.8.0",
     "framer-motion": "^10.12.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"

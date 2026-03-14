@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getI18n } from "@/locales/server";
 import Link from "next/link";
 import { contentProjects } from "@/content/projects";
 import { contentExperience } from "@/content/experience";
@@ -25,8 +25,12 @@ export default async function LocaleHome({
     notFound();
   }
 
-  const t = await getTranslations({ locale, namespace: "root" });
-  const qualityPoints = t.raw("sections.engineeringQualityPoints") as string[];
+  const t = await getI18n();
+  const qualityPoints = [
+    t("sections.engineeringQualityPoints.one"),
+    t("sections.engineeringQualityPoints.two"),
+    t("sections.engineeringQualityPoints.three"),
+  ];
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-14 px-6 py-12 text-slate-100">
