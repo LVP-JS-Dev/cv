@@ -9,8 +9,13 @@ type RevealProps = {
   delay?: number;
 };
 
-export default function Reveal({ children, className, id, delay = 0 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+export default function Reveal({
+  children,
+  className,
+  id,
+  delay = 0,
+}: RevealProps) {
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const element = ref.current;
@@ -44,13 +49,13 @@ export default function Reveal({ children, className, id, delay = 0 }: RevealPro
   }, []);
 
   return (
-    <div
+    <section
       ref={ref}
       id={id}
       className={["reveal", className].filter(Boolean).join(" ")}
       style={{ "--reveal-delay": `${delay}s` } as React.CSSProperties}
     >
       {children}
-    </div>
+    </section>
   );
 }

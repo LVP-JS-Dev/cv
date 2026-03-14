@@ -47,7 +47,8 @@ export async function generateMetadata({
   const languages = Object.fromEntries(
     locales.map((entry) => [entry, new URL(`/${entry}`, metadataBase).toString()]),
   ) as Record<Locale, string>;
-  const ogImage = new URL("/og.svg", metadataBase).toString();
+  const ogImage = new URL("/opengraph-image", metadataBase).toString();
+  const twitterImage = new URL("/twitter-image", metadataBase).toString();
 
   return {
     title: messages?.hero?.headline || "Platform Engineering",
@@ -79,7 +80,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: messages?.hero?.headline,
       description: messages?.hero?.description,
-      images: [ogImage],
+      images: [twitterImage],
     },
   };
 }
