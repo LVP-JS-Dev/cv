@@ -19,7 +19,21 @@ The locale-aware experience lives under `app/[locale]`. Visiting `/` redirects t
 
 ## Running tests
 
-No automated tests are configured. Run `npm run lint` after installing dependencies if desired.
+Run `npm run lint` after installing dependencies if desired.
+
+### E2E and accessibility
+
+```bash
+npx playwright install
+npm run test:e2e
+npm run test:a11y
+```
+
+### Lighthouse CI
+
+```bash
+npm run lhci
+```
 
 ## Git workflow
 
