@@ -40,6 +40,17 @@ export default {
     cv: "Резюме",
     placeholderNote: "Ссылки GitHub/LinkedIn/резюме — плейсхолдеры до обновления.",
   },
+  projectDetail: {
+    overview: "Обзор",
+    outcomes: "Результаты",
+    challenges: "Сложности",
+    stack: "Технологии",
+    links: "Ссылки",
+    confidentialBadge: "Конфиденциально",
+    confidentialTitle: "Конфиденциальный проект",
+    back: "К проектам",
+    viewProject: "Посмотреть проект",
+  },
   contactForm: {
     subtitle: "Опиши роль или проект и желаемый результат — отвечу с оценкой и шагами.",
     nameLabel: "Имя",

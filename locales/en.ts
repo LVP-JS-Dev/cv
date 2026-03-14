@@ -40,6 +40,17 @@ export default {
     cv: "Download CV",
     placeholderNote: "GitHub/LinkedIn/CV links are placeholders until updated.",
   },
+  projectDetail: {
+    overview: "Overview",
+    outcomes: "Outcomes",
+    challenges: "Challenges",
+    stack: "Tech stack",
+    links: "Links",
+    confidentialBadge: "Confidential",
+    confidentialTitle: "Confidential project",
+    back: "Back to projects",
+    viewProject: "View project",
+  },
   contactForm: {
     subtitle: "Tell me about your role or project and the outcomes you expect.",
     nameLabel: "Name",

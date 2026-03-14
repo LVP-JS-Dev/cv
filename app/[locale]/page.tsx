@@ -22,6 +22,9 @@ const contactLinks = {
 /**
  * Renders the locale-specific home view with localized content fetched via the server helper.
  */
+/**
+ * Renders the localized home page content.
+ */
 export default async function LocaleHome({
   params,
 }: Readonly<{ params: Promise<Params> }>) {
@@ -185,18 +188,15 @@ export default async function LocaleHome({
                   ))}
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2 text-sm text-slate-300">
-                  {project.links.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="text-slate-300 underline underline-offset-2"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </article>
-            ))}
+                <Link
+                  href={`/${locale}/projects/${project.slug}`}
+                  className="text-slate-300 underline underline-offset-2"
+                >
+                  {t("projectDetail.viewProject")}
+                </Link>
+              </div>
+            </article>
+          ))}
           </div>
       </Reveal>
 
