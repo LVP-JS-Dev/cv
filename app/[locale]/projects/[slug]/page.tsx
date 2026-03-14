@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { setStaticParamsLocale } from "next-international/server";
-import { CaseStudyList, CaseStudySection } from "@/components/CaseStudySection";
 import { contentProjects } from "@/content/projects";
 import { getI18n } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
@@ -10,6 +9,24 @@ type Params = {
   locale: string;
   slug: string;
 };
+
+type SectionProps = Readonly<{
+  title: string;
+  items: string[];
+}>;
+
+function Section({ title, items }: SectionProps) {
+  return (
+    <section className="space-y-4">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <ul className="list-disc space-y-2 pl-5 text-slate-300">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 /**
  * Prebuilds static project routes based on known project slugs.
@@ -78,66 +95,6 @@ export default async function ProjectDetailPage({
   const displayTitle = project.anonymous
     ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
     : project.title;
-  const sections = [
-    {
-      key: "overview",
-      title: t("caseStudy.overview"),
-      content: (
-        <CaseStudyList items={project.overview} listKey={`${project.slug}-overview`} />
-      ),
-    },
-    {
-      key: "outcomes",
-      title: t("caseStudy.outcomes"),
-      content: (
-        <CaseStudyList items={project.outcomes} listKey={`${project.slug}-outcomes`} />
-      ),
-    },
-    {
-      key: "challenges",
-      title: t("caseStudy.challenges"),
-      content: (
-        <CaseStudyList items={project.challenges} listKey={`${project.slug}-challenges`} />
-      ),
-    },
-    {
-      key: "stack",
-      title: t("caseStudy.stack"),
-      content: (
-        <>
-          <div className="flex flex-wrap gap-2 text-xs text-slate-400">
-            {project.tech.map((tech) => (
-              <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
-                {tech}
-              </span>
-            ))}
-          </div>
-          <CaseStudyList items={project.stackNotes} listKey={`${project.slug}-stack`} />
-        </>
-      ),
-    },
-    ...(project.links.length > 0
-      ? [
-          {
-            key: "links",
-            title: t("caseStudy.links"),
-            content: (
-              <div className="flex flex-wrap gap-3">
-                {project.links.map((link, index) => (
-                  <Link
-                    key={`${project.slug}-link-${index}`}
-                    href={link.href}
-                    className="text-slate-300 underline underline-offset-2"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            ),
-          },
-        ]
-      : []),
-  ];
 
   return (
     <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-12 text-slate-100">
@@ -163,11 +120,42 @@ export default async function ProjectDetailPage({
         <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
       </header>
 
-      {sections.map((section) => (
-        <CaseStudySection key={section.key} title={section.title}>
-          {section.content}
-        </CaseStudySection>
-      ))}
+      <Section title={t("caseStudy.overview")} items={project.overview} />
+      <Section title={t("caseStudy.outcomes")} items={project.outcomes} />
+      <Section title={t("caseStudy.challenges")} items={project.challenges} />
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">{t("caseStudy.stack")}</h2>
+        <div className="flex flex-wrap gap-2 text-xs text-slate-400">
+          {project.tech.map((tech) => (
+            <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
+              {tech}
+            </span>
+          ))}
+        </div>
+        <ul className="list-disc space-y-2 pl-5 text-slate-300">
+          {project.stackNotes.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      {project.links.length > 0 ? (
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">{t("caseStudy.links")}</h2>
+          <div className="flex flex-wrap gap-3">
+            {project.links.map((link, index) => (
+              <Link
+                key={`${project.slug}-link-${index}`}
+                href={link.href}
+                className="text-slate-300 underline underline-offset-2"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
