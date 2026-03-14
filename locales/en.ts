@@ -1,3 +1,6 @@
+/**
+ * English locale dictionary for UI strings and case study labels.
+ */
 export default {
   site: {
     name: "Leonid Petrov — Senior Frontend Engineer",

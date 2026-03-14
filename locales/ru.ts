@@ -1,3 +1,6 @@
+/**
+ * Russian locale dictionary for UI strings and case study labels.
+ */
 export default {
   site: {
     name: "Леонид Петров — Senior Frontend Engineer",
