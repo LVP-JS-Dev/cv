@@ -7,6 +7,9 @@ type Params = {
   locale: string;
 };
 
+/**
+ * Re-exports the server helper that supplies locale-aware static parameters.
+ */
 export const generateStaticParams = getStaticParams;
 
 async function loadMessages(locale: Locale) {
@@ -21,6 +24,9 @@ async function loadMessages(locale: Locale) {
   return dictionary[locale];
 }
 
+/**
+ * Builds per-locale metadata, falling back safely to the default locale.
+ */
 export async function generateMetadata({
   params,
 }: {
@@ -62,6 +68,9 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Wraps each locale route in the client-side I18n provider.
+ */
 export default async function LocaleLayout({
   children,
   params,

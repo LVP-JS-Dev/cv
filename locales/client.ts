@@ -2,6 +2,9 @@
 
 import { createI18nClient } from "next-international/client";
 
+/**
+ * Client-side factory exposing hooks and provider for the localized UI.
+ */
 export const {
   useI18n,
   useScopedI18n,

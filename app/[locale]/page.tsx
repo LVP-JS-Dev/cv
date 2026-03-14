@@ -16,6 +16,9 @@ const contactLinks = {
   cv: "/cv.pdf",
 };
 
+/**
+ * Renders the locale-specific home view with localized content fetched via the server helper.
+ */
 export default async function LocaleHome({
   params,
 }: Readonly<{ params: Promise<Params> }>) {
