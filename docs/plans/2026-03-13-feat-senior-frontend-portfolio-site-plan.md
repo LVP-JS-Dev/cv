@@ -9,7 +9,7 @@ origin: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md
 # feat: Senior Frontend Portfolio Site
 
 ## Overview
-Build a bilingual (RU/EN) portfolio site for a Senior Frontend Engineer that quickly communicates value to recruiters and tech leads while demonstrating depth in architecture, performance, accessibility, and DX (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). The site should include 4-6 case studies, an engineering quality section, and a clear primary CTA via email with supporting links to Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). Content can start as placeholders derived from the updated resume and be ready for future expansion (blog/playground) without structural changes (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+Build a bilingual (RU/EN) portfolio site for a Senior Frontend Engineer that quickly communicates value to recruiters and tech leads while demonstrating depth in architecture, performance, accessibility, and DX (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). The site should include 4-6 case studies, an engineering quality section, and a clear primary CTA via email with supporting links to Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). Content can start as placeholders derived from the updated resume and be ready for future expansion without structural changes (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
 
 ### Research Insights
 - Use App Router nested layouts to keep the shell static and reduce client JS.
@@ -230,8 +230,7 @@ Phase C — Quality Layer (launch gate)
 - Contact form Server Action with anti-spam.
 - Lighthouse CI and remediation.
 
-Phase D — Post-launch slots
-- Blog route scaffold (no nav link until content ready).
+Phase D — Post-launch slot
 - Playground slot (optional).
 
 ### Tests
