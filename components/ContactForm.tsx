@@ -56,10 +56,9 @@ export default function ContactForm() {
           className="rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-slate-100"
         />
       </label>
-      <label className="sr-only">
-        {t("contactForm.companyLabel")}
+      <div aria-hidden="true" className="hidden">
         <input name="company" tabIndex={-1} autoComplete="off" />
-      </label>
+      </div>
       <div className="flex flex-wrap items-center gap-3">
         <SubmitButton />
         <span className="text-sm text-slate-400">{t("contactForm.or")}</span>
@@ -72,6 +71,9 @@ export default function ContactForm() {
       </div>
       {state.status !== "idle" ? (
         <p
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           className={
             state.status === "success"
               ? "text-sm text-emerald-300"

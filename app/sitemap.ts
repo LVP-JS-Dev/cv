@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!baseUrl && process.env.NODE_ENV === "production") {
     throw new Error("NEXT_PUBLIC_SITE_URL is required to generate sitemap.");
   }
-  const resolvedBaseUrl = baseUrl ?? "https://example.com";
+  const resolvedBaseUrl = (baseUrl ?? "https://example.com").replace(/\/+$/, "");
   const lastModified = new Date(process.env.NEXT_PUBLIC_BUILD_DATE ?? "2026-03-14");
 
   return locales.map((locale) => ({

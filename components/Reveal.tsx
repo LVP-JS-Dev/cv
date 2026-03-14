@@ -23,6 +23,19 @@ export default function Reveal({
       return;
     }
 
+    if (typeof window === "undefined") {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
+    if (
+      typeof window.matchMedia !== "function" ||
+      typeof window.IntersectionObserver !== "function"
+    ) {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;

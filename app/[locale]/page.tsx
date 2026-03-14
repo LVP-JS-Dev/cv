@@ -37,17 +37,19 @@ export default async function LocaleHome({
     t("sections.engineeringQualityPoints.two"),
     t("sections.engineeringQualityPoints.three"),
   ];
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
-  const canonicalUrl = `${baseUrl}/${locale}`;
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+  const baseUrl = rawBaseUrl.replace(/\/+$/, "");
+  const canonicalUrl = new URL(`/${locale}`, baseUrl).toString();
+  const sameAs = [contactLinks.telegram, contactLinks.github, contactLinks.linkedin].filter(
+    (url) => Boolean(url) && !/placeholder/i.test(url),
+  );
   const jsonLd = [
     buildPersonJsonLd({
       name: "Leonid Petrov",
       jobTitle: t("hero.headline"),
       email: t("cta.email"),
       url: canonicalUrl,
-      sameAs: [contactLinks.telegram, contactLinks.github, contactLinks.linkedin].filter(
-        Boolean,
-      ),
+      ...(sameAs.length ? { sameAs } : {}),
     }),
     buildWebsiteJsonLd({
       name: t("site.name"),
@@ -56,12 +58,13 @@ export default async function LocaleHome({
       url: canonicalUrl,
     }),
   ];
+  const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-14 px-6 py-12 text-slate-100">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString }}
       />
       <Reveal className="space-y-6" id="hero">
           <p className="text-sm uppercase tracking-[0.4em] text-slate-400">{t("nav")}</p>

@@ -77,20 +77,25 @@ export async function submitContact(
 
   const contactFrom =
     process.env.CONTACT_FROM ?? "Portfolio <onboarding@resend.dev>";
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: contactFrom,
-      to: contactTo,
-      subject: `Portfolio contact: ${name}`,
-      reply_to: email,
-      text: message,
-    }),
-  });
+  let response: Response;
+  try {
+    response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: contactFrom,
+        to: contactTo,
+        subject: `Portfolio contact: ${name}`,
+        reply_to: email,
+        text: message,
+      }),
+    });
+  } catch {
+    return { status: "error", error: "send" };
+  }
 
   if (!response.ok) {
     return { status: "error", error: "send" };
