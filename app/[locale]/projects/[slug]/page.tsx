@@ -78,10 +78,65 @@ export default async function ProjectDetailPage({
   const displayTitle = project.anonymous
     ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
     : project.title;
-  const listSections = [
-    { key: "overview", title: t("caseStudy.overview"), items: project.overview },
-    { key: "outcomes", title: t("caseStudy.outcomes"), items: project.outcomes },
-    { key: "challenges", title: t("caseStudy.challenges"), items: project.challenges },
+  const sections = [
+    {
+      key: "overview",
+      title: t("caseStudy.overview"),
+      content: (
+        <CaseStudyList items={project.overview} listKey={`${project.slug}-overview`} />
+      ),
+    },
+    {
+      key: "outcomes",
+      title: t("caseStudy.outcomes"),
+      content: (
+        <CaseStudyList items={project.outcomes} listKey={`${project.slug}-outcomes`} />
+      ),
+    },
+    {
+      key: "challenges",
+      title: t("caseStudy.challenges"),
+      content: (
+        <CaseStudyList items={project.challenges} listKey={`${project.slug}-challenges`} />
+      ),
+    },
+    {
+      key: "stack",
+      title: t("caseStudy.stack"),
+      content: (
+        <>
+          <div className="flex flex-wrap gap-2 text-xs text-slate-400">
+            {project.tech.map((tech) => (
+              <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
+                {tech}
+              </span>
+            ))}
+          </div>
+          <CaseStudyList items={project.stackNotes} listKey={`${project.slug}-stack`} />
+        </>
+      ),
+    },
+    ...(project.links.length > 0
+      ? [
+          {
+            key: "links",
+            title: t("caseStudy.links"),
+            content: (
+              <div className="flex flex-wrap gap-3">
+                {project.links.map((link, index) => (
+                  <Link
+                    key={`${project.slug}-link-${index}`}
+                    href={link.href}
+                    className="text-slate-300 underline underline-offset-2"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -108,41 +163,11 @@ export default async function ProjectDetailPage({
         <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
       </header>
 
-      {listSections.map((section) => (
+      {sections.map((section) => (
         <CaseStudySection key={section.key} title={section.title}>
-          <CaseStudyList
-            items={section.items}
-            listKey={`${project.slug}-${section.key}`}
-          />
+          {section.content}
         </CaseStudySection>
       ))}
-
-      <CaseStudySection title={t("caseStudy.stack")}>
-        <div className="flex flex-wrap gap-2 text-xs text-slate-400">
-          {project.tech.map((tech) => (
-            <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
-              {tech}
-            </span>
-          ))}
-        </div>
-        <CaseStudyList items={project.stackNotes} listKey={`${project.slug}-stack`} />
-      </CaseStudySection>
-
-      {project.links.length > 0 ? (
-        <CaseStudySection title={t("caseStudy.links")}>
-          <div className="flex flex-wrap gap-3">
-            {project.links.map((link, index) => (
-              <Link
-                key={`${project.slug}-link-${index}`}
-                href={link.href}
-                className="text-slate-300 underline underline-offset-2"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </CaseStudySection>
-      ) : null}
     </main>
   );
 }
