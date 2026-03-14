@@ -45,7 +45,7 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 
 ### Research Insights
 - Keep most sections as RSC and isolate interactivity in leaf client components.
-- Use `next-intl` with `app/[locale]` routing and `generateMetadata` per locale.
+- Use `next-international` with `app/[locale]` routing and `generateMetadata` per locale.
 
 ### Edge Cases
 - Missing `hreflang` alternates harms RU/EN SEO.
@@ -54,7 +54,7 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 ### Implementation Notes
 | Decision | Chosen | Alternative | Why Chosen |
 | --- | --- | --- | --- |
-| i18n routing | `app/[locale]` + next-intl | subdomains / next-i18next | Lower deploy complexity and consistent previews |
+| i18n routing | `app/[locale]` + next-international | subdomains / next-i18next | Lower deploy complexity and consistent previews |
 | Content source | Typed TS objects | MDX / CMS | Fast iteration with placeholders and no external deps |
 | Contact backend | Server Action | `/api/contact` route | One surface to audit; avoid duplication |
 | Animation | Motion | CSS-only / GSAP | Reduced-motion support built-in |
@@ -69,7 +69,7 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 
 ## Technical Considerations
 - **Framework/Stack**: Next.js App Router + TypeScript, Tailwind CSS, Motion for animations, optional 3D playground (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- **i18n**: Route segment locales (e.g., `app/[locale]`) with `next-intl` routing, RU/EN alternates in metadata.
+- **i18n**: Route segment locales (e.g., `app/[locale]`) with `next-international` routing, RU/EN alternates in metadata.
 - **SEO**: Metadata API with canonical and `alternates.languages`, OpenGraph image, sitemap/robots, JSON-LD for Person + WebSite.
 - **Performance**: RSC by default; client components only where needed for animation and interaction. Use `next/image` and `next/font` to keep Lighthouse >= 90 (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
 - **Contact**: Server Actions for contact form with basic anti-spam (honeypot + rate limit). Primary CTA email; Telegram as secondary.

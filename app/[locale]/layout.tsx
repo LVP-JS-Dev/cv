@@ -1,15 +1,32 @@
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
+import { I18nProviderClient } from "@/locales/client";
+import { getStaticParams } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
 type Params = {
   locale: string;
 };
 
+/**
+ * Re-exports the server helper that supplies locale-aware static parameters.
+ */
+export const generateStaticParams = getStaticParams;
+
 async function loadMessages(locale: Locale) {
-  return (await import(`../../messages/${locale}.json`)).default;
+  const modules = await Promise.all([
+    import("@/locales/en"),
+    import("@/locales/ru"),
+  ]);
+  const dictionary = {
+    en: modules[0].default,
+    ru: modules[1].default,
+  } as const;
+  return dictionary[locale];
 }
 
+/**
+ * Builds per-locale metadata, falling back safely to the default locale.
+ */
 export async function generateMetadata({
   params,
 }: {
@@ -32,9 +49,9 @@ export async function generateMetadata({
   ) as Record<Locale, string>;
 
   return {
-    title: messages?.root?.hero?.headline || "Platform Engineering",
+    title: messages?.hero?.headline || "Platform Engineering",
     description:
-      messages?.root?.hero?.description || "Engineering leadership focused on resilient products.",
+      messages?.hero?.description || "Engineering leadership focused on resilient products.",
     alternates: {
       canonical,
       languages,
@@ -42,8 +59,8 @@ export async function generateMetadata({
     metadataBase,
     robots: { index: !noIndex, follow: true },
     openGraph: {
-      title: messages?.root?.hero?.headline,
-      description: messages?.root?.hero?.description,
+      title: messages?.hero?.headline,
+      description: messages?.hero?.description,
       url: canonical,
       type: "website",
       locale,
@@ -51,6 +68,9 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Wraps each locale route in the client-side I18n provider.
+ */
 export default async function LocaleLayout({
   children,
   params,
@@ -62,11 +82,10 @@ export default async function LocaleLayout({
   const locale = locales.includes(localeParam as Locale)
     ? (localeParam as Locale)
     : defaultLocale;
-  const messages = await loadMessages(locale);
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <I18nProviderClient locale={locale}>
       {children}
-    </NextIntlClientProvider>
+    </I18nProviderClient>
   );
 }
