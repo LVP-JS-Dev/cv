@@ -15,12 +15,27 @@ type CaseStudySectionProps = Readonly<{
   children: React.ReactNode;
 }>;
 
+type CaseStudyListProps = Readonly<{
+  items: string[];
+  listKey: string;
+}>;
+
 function CaseStudySection({ title, children }: CaseStudySectionProps) {
   return (
     <section className="space-y-4">
       <h2 className="text-2xl font-semibold">{title}</h2>
       {children}
     </section>
+  );
+}
+
+function CaseStudyList({ items, listKey }: CaseStudyListProps) {
+  return (
+    <ul className="list-disc space-y-2 pl-5 text-slate-300">
+      {items.map((item, index) => (
+        <li key={`${listKey}-${index}`}>{item}</li>
+      ))}
+    </ul>
   );
 }
 
@@ -117,27 +132,15 @@ export default async function ProjectDetailPage({
       </header>
 
       <CaseStudySection title={t("caseStudy.overview")}>
-        <ul className="list-disc space-y-2 pl-5 text-slate-300">
-          {project.overview.map((item, index) => (
-            <li key={`${project.slug}-overview-${index}`}>{item}</li>
-          ))}
-        </ul>
+        <CaseStudyList items={project.overview} listKey={`${project.slug}-overview`} />
       </CaseStudySection>
 
       <CaseStudySection title={t("caseStudy.outcomes")}>
-        <ul className="list-disc space-y-2 pl-5 text-slate-300">
-          {project.outcomes.map((item, index) => (
-            <li key={`${project.slug}-outcomes-${index}`}>{item}</li>
-          ))}
-        </ul>
+        <CaseStudyList items={project.outcomes} listKey={`${project.slug}-outcomes`} />
       </CaseStudySection>
 
       <CaseStudySection title={t("caseStudy.challenges")}>
-        <ul className="list-disc space-y-2 pl-5 text-slate-300">
-          {project.challenges.map((item, index) => (
-            <li key={`${project.slug}-challenges-${index}`}>{item}</li>
-          ))}
-        </ul>
+        <CaseStudyList items={project.challenges} listKey={`${project.slug}-challenges`} />
       </CaseStudySection>
 
       <CaseStudySection title={t("caseStudy.stack")}>
@@ -148,11 +151,7 @@ export default async function ProjectDetailPage({
             </span>
           ))}
         </div>
-        <ul className="list-disc space-y-2 pl-5 text-slate-300">
-          {project.stackNotes.map((item, index) => (
-            <li key={`${project.slug}-stack-${index}`}>{item}</li>
-          ))}
-        </ul>
+        <CaseStudyList items={project.stackNotes} listKey={`${project.slug}-stack`} />
       </CaseStudySection>
 
       {project.links.length > 0 ? (
