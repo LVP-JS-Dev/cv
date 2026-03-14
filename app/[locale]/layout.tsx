@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
-import { Geist } from "next/font/google";
-import "../globals.css";
-
-const geist = Geist({ subsets: ["latin", "cyrillic"], variable: "--font-geist" });
 
 type Params = {
   locale: string;
@@ -69,12 +65,8 @@ export default async function LocaleLayout({
   const messages = await loadMessages(locale);
 
   return (
-    <html lang={locale} className={geist.variable}>
-      <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      {children}
+    </NextIntlClientProvider>
   );
 }
