@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { setStaticParamsLocale } from "next-international/server";
+import { CaseStudyList, CaseStudySection } from "@/components/CaseStudySection";
 import { contentProjects } from "@/content/projects";
 import { getI18n } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
@@ -9,35 +10,6 @@ type Params = {
   locale: string;
   slug: string;
 };
-
-type CaseStudySectionProps = Readonly<{
-  title: string;
-  children: React.ReactNode;
-}>;
-
-type CaseStudyListProps = Readonly<{
-  items: string[];
-  listKey: string;
-}>;
-
-function CaseStudySection({ title, children }: CaseStudySectionProps) {
-  return (
-    <section className="space-y-4">
-      <h2 className="text-2xl font-semibold">{title}</h2>
-      {children}
-    </section>
-  );
-}
-
-function CaseStudyList({ items, listKey }: CaseStudyListProps) {
-  return (
-    <ul className="list-disc space-y-2 pl-5 text-slate-300">
-      {items.map((item, index) => (
-        <li key={`${listKey}-${index}`}>{item}</li>
-      ))}
-    </ul>
-  );
-}
 
 /**
  * Prebuilds static project routes based on known project slugs.
