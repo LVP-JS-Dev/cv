@@ -25,6 +25,14 @@ export default async function RootLayout({
     <html lang={defaultLocale} className={geist.variable}>
       <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
         <CursorSpotlight />
+        <div className="sky-container" aria-hidden="true">
+          <span className="star star-1" />
+          <span className="star star-2" />
+          <span className="star star-3" />
+          <span className="star star-4" />
+          <span className="star star-5" />
+          <span className="star star-6" />
+        </div>
         {children}
       </body>
     </html>

@@ -23,13 +23,146 @@
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at top, rgba(156, 148, 255, 0.25), transparent 45%)
-      no-repeat,
-    radial-gradient(circle at 20% 20%, rgba(29, 78, 216, 0.35), transparent 35%)
-      no-repeat,
-    #020617;
+  position: relative;
+  background:
+    radial-gradient(circle at top, rgba(156, 148, 255, 0.22), transparent 45%),
+    radial-gradient(circle at 20% 20%, rgba(29, 78, 216, 0.3), transparent 40%),
+    linear-gradient(180deg, #131b37 0%, #0b1226 45%, #020617 100%);
   color: var(--foreground);
   font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
+body > :not(.sky-container) {
+  position: relative;
+  z-index: 2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 18px 24px, rgba(248, 250, 252, 1), transparent 55%),
+    radial-gradient(1px 1px at 96px 68px, rgba(226, 232, 240, 0.85), transparent 55%),
+    radial-gradient(1.5px 1.5px at 148px 132px, rgba(226, 232, 240, 0.8), transparent 60%),
+    radial-gradient(2px 2px at 220px 160px, rgba(226, 232, 240, 0.7), transparent 60%);
+  background-size: 140px 140px, 200px 200px, 280px 280px, 380px 380px;
+  background-position: 0 0, 40px 20px, 120px 80px, 200px 140px;
+  background-repeat: repeat;
+  opacity: 1;
+}
+
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 24px 30px, rgba(248, 250, 252, 0.85), transparent 55%),
+    radial-gradient(1px 1px at 180px 120px, rgba(226, 232, 240, 0.75), transparent 55%),
+    radial-gradient(1.5px 1.5px at 320px 220px, rgba(248, 250, 252, 0.7), transparent 60%);
+  background-size: 420px 420px, 620px 620px, 820px 820px;
+  background-position: 0 0, 160px 120px, 280px 220px;
+  background-repeat: repeat;
+  opacity: 0.18;
+  animation: twinkle 12s ease-in-out infinite;
+  animation-delay: 2.8s;
+}
+
+.sky-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 0;
+  height: 1px;
+  transform-origin: 100% 50%;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 255, 0) 0%,
+    rgba(120, 170, 255, 0.95) 100%
+  );
+  filter: drop-shadow(0 0 8px rgba(70, 120, 255, 0.9));
+  opacity: 0;
+  animation:
+    tail var(--shoot-duration, 14000ms) ease-in-out infinite,
+    shooting var(--shoot-duration, 14000ms) ease-in-out infinite;
+  --shoot-angle: 20deg;
+  --shoot-distance-x: 320px;
+  --shoot-distance-y: 120px;
+}
+
+.star::before,
+.star::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(
+    -45deg,
+    rgba(0, 0, 255, 0),
+    rgba(120, 170, 255, 0.95),
+    rgba(0, 0, 255, 0)
+  );
+  border-radius: 100%;
+  transform: translateX(50%) rotateZ(45deg);
+  animation: shining var(--shoot-duration, 14000ms) ease-in-out infinite;
+}
+
+.star::after {
+  transform: translateX(50%) rotateZ(-45deg);
+}
+
+.star-1 {
+  top: 18%;
+  left: 8%;
+  --shoot-duration: 16000ms;
+  animation-delay: 0ms;
+}
+
+.star-2 {
+  top: 42%;
+  left: 24%;
+  --shoot-duration: 18000ms;
+  animation-delay: 1400ms;
+}
+
+.star-3 {
+  top: 62%;
+  left: 14%;
+  --shoot-duration: 20000ms;
+  animation-delay: 2600ms;
+}
+
+.star-4 {
+  top: 32%;
+  left: 36%;
+  --shoot-duration: 22000ms;
+  animation-delay: 4200ms;
+}
+
+.star-5 {
+  top: 28%;
+  left: 56%;
+  --shoot-duration: 26000ms;
+  animation-delay: 6200ms;
+}
+
+.star-6 {
+  top: 58%;
+  left: 44%;
+  --shoot-duration: 30000ms;
+  animation-delay: 9800ms;
 }
 
 html.spotlight-ready body::before {
@@ -37,6 +170,7 @@ html.spotlight-ready body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 1;
   background: radial-gradient(
       220px circle at var(--spotlight-x) var(--spotlight-y),
       rgba(224, 231, 255, 0.6),
@@ -50,4 +184,69 @@ html.spotlight-ready body::before {
   opacity: var(--spotlight-opacity);
   mix-blend-mode: screen;
   transition: opacity 0.2s ease;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  60% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes shining {
+  0%,
+  70% {
+    width: 0;
+  }
+  78% {
+    width: 22px;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes tail {
+  0%,
+  70% {
+    width: 0;
+  }
+  78% {
+    width: 90px;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes shooting {
+  0%,
+  70% {
+    transform: translate(0, 0) rotate(var(--shoot-angle));
+    opacity: 0;
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--shoot-distance-x), var(--shoot-distance-y))
+      rotate(var(--shoot-angle));
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after,
+  html::before,
+  .star,
+  .star::before,
+  .star::after {
+    animation: none;
+  }
 }
