@@ -4,7 +4,11 @@ import { defaultLocale } from "@/i18n/routing";
 import CursorSpotlight from "@/components/CursorSpotlight";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin", "cyrillic"], variable: "--font-geist" });
+const geist = Geist({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-geist",
+  display: "optional",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(

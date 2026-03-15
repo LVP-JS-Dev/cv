@@ -43,6 +43,9 @@ export default {
     cv: "Резюме",
     placeholderNote: "Ссылки GitHub/LinkedIn/резюме — плейсхолдеры до обновления.",
   },
+  localeSwitch: {
+    label: "Сменить язык",
+  },
   contactForm: {
     subtitle: "Опиши роль или проект и желаемый результат — отвечу с оценкой и шагами.",
     nameLabel: "Имя",

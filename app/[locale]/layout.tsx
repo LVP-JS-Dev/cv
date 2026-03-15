@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { I18nProviderClient } from "@/locales/client";
 import HtmlLang from "@/components/HtmlLang";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { getStaticParams } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
@@ -96,6 +97,9 @@ export default async function LocaleLayout({
 
   return (
     <I18nProviderClient locale={locale}>
+      <div className="pointer-events-none fixed right-4 top-4 z-50 md:right-6 md:top-6">
+        <LocaleSwitcher className="pointer-events-auto" />
+      </div>
       <HtmlLang />
       {children}
     </I18nProviderClient>

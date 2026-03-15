@@ -10,7 +10,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:axe": "playwright test tests/e2e/accessibility.spec.ts",
-    "lhci": "lhci autorun --config=./lighthouserc.json"
+    "lhci:mobile": "lhci autorun --config=./lighthouserc.json",
+    "lhci:desktop": "LHCI_COLLECT__SETTINGS__PRESET=desktop lhci autorun --config=./lighthouserc.json",
+    "lhci": "npm run lhci:mobile && npm run lhci:desktop"
   },
   "dependencies": {
     "next": "16.1.6",
@@ -21,7 +23,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
-    "@lhci/cli": "^0.14.0",
+    "@lhci/cli": "^0.15.0",
     "@playwright/test": "^1.51.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

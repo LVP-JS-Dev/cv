@@ -67,7 +67,7 @@ export default async function LocaleHome({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString }}
       />
-      <Reveal className="space-y-6" id="hero">
+      <Reveal className="space-y-6" id="hero" eager>
         <p className="text-sm uppercase tracking-[0.4em] text-slate-400">{t("nav")}</p>
         <h1 className="text-5xl font-semibold leading-tight text-white">
           {t("hero.headline")}
@@ -95,7 +95,7 @@ export default async function LocaleHome({
         </div>
       </Reveal>
 
-      <Reveal className="space-y-4" id="about" delay={0.05}>
+      <Reveal className="space-y-4" id="about" delay={0.12}>
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold">{t("sections.about")}</h2>
           <Link href="#contact" className="text-sm uppercase tracking-[0.2em] text-slate-400">
@@ -105,7 +105,7 @@ export default async function LocaleHome({
         <p className="text-slate-300 max-w-3xl">{t("sections.aboutSummary")}</p>
       </Reveal>
 
-      <Reveal className="space-y-6" id="experience" delay={0.1}>
+      <Reveal className="space-y-6" id="experience" delay={0.24}>
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold">{t("sections.experience")}</h2>
           <Link href="#experience" className="text-sm uppercase tracking-[0.2em] text-slate-400">
@@ -151,7 +151,7 @@ export default async function LocaleHome({
         </div>
       </Reveal>
 
-      <Reveal className="space-y-6" id="projects" delay={0.15}>
+      <Reveal className="space-y-6" id="projects" delay={0.36}>
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold">{t("sections.projects")}</h2>
           <Link href="#projects" className="text-sm uppercase tracking-[0.2em] text-slate-400">
@@ -192,7 +192,7 @@ export default async function LocaleHome({
       <Reveal
         className="space-y-4 rounded-2xl border border-slate-800/70 bg-slate-900/60 p-6"
         id="quality"
-        delay={0.2}
+        delay={0.48}
       >
         <h2 className="text-2xl font-semibold text-white">{t("sections.engineeringQuality")}</h2>
         <p className="text-slate-300">{t("sections.engineeringQualityDescription")}</p>
@@ -206,7 +206,7 @@ export default async function LocaleHome({
       <Reveal
         className="space-y-4 rounded-2xl border border-slate-800/70 bg-slate-900/60 p-6"
         id="content"
-        delay={0.25}
+        delay={0.6}
       >
         <h2 className="text-2xl font-semibold text-white">{t("sections.content")}</h2>
         <p className="text-slate-300 max-w-3xl">{t("sections.contentDescription")}</p>
@@ -216,7 +216,7 @@ export default async function LocaleHome({
       <Reveal
         className="space-y-4 rounded-2xl border border-slate-800/70 bg-slate-900/60 p-8"
         id="contact"
-        delay={0.3}
+        delay={0.72}
       >
         <div className="flex flex-col gap-1">
           <p className="text-sm uppercase tracking-[0.4em] text-slate-400">

@@ -32,6 +32,13 @@ test("project detail renders and links back", async ({ page }) => {
   );
 });
 
+test("locale switcher preserves current path", async ({ page }) => {
+  await page.goto("/en/projects/biometric-kyc-liveness");
+
+  await page.getByRole("link", { name: "RU" }).click();
+  await expect(page).toHaveURL(/\/ru\/projects\/biometric-kyc-liveness$/);
+});
+
 test("contact form returns fallback status when email not configured", async ({
   page,
 }) => {

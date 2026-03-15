@@ -43,6 +43,9 @@ export default {
     cv: "Download CV",
     placeholderNote: "GitHub/LinkedIn/CV links are placeholders until updated.",
   },
+  localeSwitch: {
+    label: "Switch language",
+  },
   contactForm: {
     subtitle: "Tell me about your role or project and the outcomes you expect.",
     nameLabel: "Name",
