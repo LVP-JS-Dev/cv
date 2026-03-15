@@ -31,10 +31,17 @@ export default function Reveal({
       return;
     }
 
+    document.documentElement.classList.add("reveal-ready");
+
     if (
       typeof window.matchMedia !== "function" ||
       typeof window.IntersectionObserver !== "function"
     ) {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
+    if (document.visibilityState === "hidden" || navigator.webdriver) {
       element.classList.add("reveal-visible");
       return;
     }

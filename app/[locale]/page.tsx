@@ -4,6 +4,7 @@ import Link from "next/link";
 import { contentProjects } from "@/content/projects";
 import { contentExperience } from "@/content/experience";
 import { locales, type Locale } from "@/i18n/routing";
+import { setStaticParamsLocale } from "next-international/server";
 import Reveal from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
 import { buildPersonJsonLd, buildWebsiteJsonLd } from "@/lib/structured-data";
@@ -30,7 +31,7 @@ export default async function LocaleHome({
   if (!locales.includes(locale)) {
     notFound();
   }
-
+  setStaticParamsLocale(locale);
   const t = await getI18n();
   const qualityPoints = [
     t("sections.engineeringQualityPoints.one"),

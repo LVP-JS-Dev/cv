@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { I18nProviderClient } from "@/locales/client";
+import HtmlLang from "@/components/HtmlLang";
 import { getStaticParams } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
@@ -95,6 +96,7 @@ export default async function LocaleLayout({
 
   return (
     <I18nProviderClient locale={locale}>
+      <HtmlLang />
       {children}
     </I18nProviderClient>
   );
