@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { defaultLocale } from "@/i18n/routing";
+import CursorSpotlight from "@/components/CursorSpotlight";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin", "cyrillic"], variable: "--font-geist" });
@@ -19,6 +20,7 @@ export default async function RootLayout({
   return (
     <html lang={defaultLocale} className={geist.variable}>
       <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
+        <CursorSpotlight />
         {children}
       </body>
     </html>

@@ -6,6 +6,9 @@
   --muted: #94a3b8;
   --border: #1f2937;
   --accent: #9c94ff;
+  --spotlight-x: 50vw;
+  --spotlight-y: 30vh;
+  --spotlight-opacity: 0;
 }
 
 @theme inline {
@@ -27,6 +30,26 @@ body {
     #020617;
   color: var(--foreground);
   font-family: var(--font-geist), system-ui, -apple-system, sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      180px circle at var(--spotlight-x) var(--spotlight-y),
+      rgba(224, 231, 255, 0.55),
+      transparent 60%
+    ) no-repeat,
+    radial-gradient(
+      520px circle at var(--spotlight-x) var(--spotlight-y),
+      rgba(148, 163, 184, 0.35),
+      transparent 55%
+    ) no-repeat;
+  opacity: var(--spotlight-opacity);
+  mix-blend-mode: screen;
+  transition: opacity 0.2s ease;
 }
 
 .reveal {
