@@ -52,9 +52,13 @@ export async function generateMetadata({
   setStaticParamsLocale(locale);
   const t = await getI18n();
   const project = contentProjects.find((item) => item.slug === slug);
+  const metadataBase = new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
+  );
+  const canonical = new URL(`/${locale}/projects/${slug}`, metadataBase).toString();
 
   if (!project) {
-    return { title: t("caseStudy.notFound") };
+    return { title: t("caseStudy.notFound"), metadataBase };
   }
 
   const title = project.anonymous
@@ -64,11 +68,16 @@ export async function generateMetadata({
   return {
     title,
     description: project.summary,
+    metadataBase,
+    alternates: {
+      canonical,
+    },
     openGraph: {
       title,
       description: project.summary,
       type: "article",
       locale,
+      url: canonical,
     },
   };
 }
