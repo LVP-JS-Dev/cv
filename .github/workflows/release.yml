@@ -32,11 +32,8 @@ jobs:
           npm run test:e2e
           npm run test:axe
 
-      - name: Build
-        run: npm run build
-
       - name: Log in to GHCR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
