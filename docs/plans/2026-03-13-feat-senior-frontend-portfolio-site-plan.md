@@ -136,16 +136,16 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 - Locale switcher preserves path across RU/EN.
 
 ## Acceptance Criteria
-- [ ] Site renders in RU and EN with locale-specific routing and `hreflang` alternates.
-- [ ] Information architecture includes Hero, About, Experience, Selected Projects, Engineering Quality, Content/Writing, Contact CTA (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] 4-6 case study entries supported with balanced focus (business impact + technical depth), with partial anonymization support (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] Primary CTA is email; secondary links include Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] Lighthouse >= 90 across Performance/Accessibility/Best Practices/SEO on a representative build (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] Metadata includes canonical URL, OpenGraph tags, and JSON-LD for Person + WebSite.
-- [ ] Content placeholders are seeded from resume data and clearly marked for replacement (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] `noindex` is enabled for non-production previews via env flag and disabled for production launch.
-- [ ] Lighthouse CI runs on preview or production URL with mobile and desktop presets.
-- [ ] Contact form uses an explicit provider (Resend) or falls back to `mailto:`.
+- [x] Site renders in RU and EN with locale-specific routing and `hreflang` alternates.
+- [x] Information architecture includes Hero, About, Experience, Selected Projects, Engineering Quality, Content/Writing, Contact CTA (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] 4-6 case study entries supported with balanced focus (business impact + technical depth), with partial anonymization support (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] Primary CTA is email; secondary links include Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] Lighthouse >= 90 across Performance/Accessibility/Best Practices/SEO on a representative build (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] Metadata includes canonical URL, OpenGraph tags, and JSON-LD for Person + WebSite.
+- [x] Content placeholders are seeded from resume data and clearly marked for replacement (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] `noindex` is enabled for non-production previews via env flag and disabled for production launch.
+- [x] Lighthouse CI runs on preview or production URL with mobile and desktop presets.
+- [x] Contact form uses an explicit provider (Resend) or falls back to `mailto:`.
 
 ### Research Insights
 - Run Lighthouse in CI to avoid regressions and confirm mobile budgets.
