@@ -1,8 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import type { HTMLAttributes } from "react";
-import { motion, useInView, useReducedMotion, type MotionProps } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 type RevealProps = {
   children: React.ReactNode;
@@ -22,41 +20,67 @@ export default function Reveal({
   delay = 0,
   eager = false,
 }: RevealProps) {
-  const ref = useRef<HTMLElement | null>(null);
-  const isInView = useInView(ref as React.RefObject<Element>, {
-    amount: 0.2,
-    once: true,
-  });
-  const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
 
-  const variants = {
-    hidden: { opacity: 1, y: 24, scale: 0.98 },
-    visible: { opacity: 1, y: 0, scale: 1 },
-  };
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) {
+      return;
+    }
 
-  const initial = prefersReducedMotion || eager ? "visible" : "hidden";
-  const animate = prefersReducedMotion
-    ? "visible"
-    : eager
-      ? "visible"
-      : isInView
-        ? "visible"
-        : "hidden";
+    if (typeof window === "undefined") {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
+    document.documentElement.classList.add("reveal-ready");
+
+    if (eager) {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
+    if (
+      typeof window.matchMedia !== "function" ||
+      typeof window.IntersectionObserver !== "function"
+    ) {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      element.classList.add("reveal-visible");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            element.classList.add("reveal-visible");
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [eager]);
 
   return (
-    <MotionSection
+    <section
       ref={ref}
       id={id}
-      className={className}
-      initial={initial}
-      animate={animate}
-      variants={variants}
-      transition={{ duration: 0.8, ease: [0.22, 0.61, 0.36, 1], delay }}
+      className={["reveal", className].filter(Boolean).join(" ")}
+      style={{ "--reveal-delay": `${delay}s` } as React.CSSProperties}
     >
       {children}
-    </MotionSection>
+    </section>
   );
 }
-const MotionSection = motion.section as React.ComponentType<
-  HTMLAttributes<HTMLElement> & MotionProps & React.RefAttributes<HTMLElement>
->;
