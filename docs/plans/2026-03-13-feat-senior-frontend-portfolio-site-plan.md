@@ -53,9 +53,10 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 - Contact form delivery flow with Resend, honeypot, rate limit, and fallback messaging.
 - Lighthouse CI configured for /en and /ru with score budgets.
 - NDA guardrail: anonymous projects require industry in frontmatter.
+- NDA content review checklist added: docs/checklists/nda-content-review.md.
 
 ### Remaining
-- NDA-safe content review checklist (manual review pass before publishing).
+- None.
 
 ### Research Insights
 - Keep most sections as RSC and isolate interactivity in leaf client components.
