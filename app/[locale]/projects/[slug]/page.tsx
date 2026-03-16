@@ -1,0 +1,201 @@
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { setStaticParamsLocale } from "next-international/server";
+import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
+import { getI18n } from "@/locales/server";
+import { defaultLocale, locales, type Locale } from "@/i18n/routing";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
+import { buildArticleJsonLd } from "@/lib/structured-data";
+
+type Params = {
+  locale: string;
+  slug: string;
+};
+
+type SectionProps = Readonly<{
+  title: string;
+  items: string[];
+}>;
+
+function Section({ title, items }: SectionProps) {
+  return (
+    <section className="space-y-4">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <ul className="list-disc space-y-2 pl-5 text-slate-300">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/**
+ * Prebuilds static project routes based on known project slugs.
+ */
+export async function generateStaticParams() {
+  const slugs = await getProjectSlugs();
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+}
+
+/**
+ * Generates per-project metadata (title/description/OG) for case studies.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { locale: localeParam, slug } = await params;
+  const locale = locales.includes(localeParam as Locale)
+    ? (localeParam as Locale)
+    : defaultLocale;
+  setStaticParamsLocale(locale);
+  const t = await getI18n();
+  const project = await getProjectBySlug(locale, slug);
+  const metadataBase = new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
+  );
+  const canonical = new URL(`/${locale}/projects/${slug}`, metadataBase).toString();
+  const languages = Object.fromEntries(
+    locales.map((entry) => [
+      entry,
+      new URL(`/${entry}/projects/${slug}`, metadataBase).toString(),
+    ]),
+  ) as Record<Locale, string>;
+
+  if (!project) {
+    return { title: t("caseStudy.notFound"), metadataBase };
+  }
+
+  const title = project.anonymous
+    ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
+    : project.title;
+
+  return {
+    title,
+    description: project.summary,
+    metadataBase,
+    alternates: {
+      canonical,
+      languages,
+    },
+    openGraph: {
+      title,
+      description: project.summary,
+      type: "article",
+      locale,
+      url: canonical,
+    },
+  };
+}
+
+/**
+ * Renders the localized project case study view for a given slug.
+ */
+export default async function ProjectDetailPage({
+  params,
+}: Readonly<{ params: Promise<Params> }>) {
+  const { locale: localeParam, slug } = await params;
+  const locale = localeParam as Locale;
+  if (!locales.includes(locale)) {
+    notFound();
+  }
+  setStaticParamsLocale(locale);
+  const t = await getI18n();
+  const project = await getProjectBySlug(locale, slug);
+
+  if (!project) {
+    notFound();
+  }
+
+  const displayTitle = project.anonymous
+    ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
+    : project.title;
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+  const baseUrl = rawBaseUrl.replace(/\/+$/, "");
+  const canonicalUrl = new URL(`/${locale}/projects/${project.slug}`, baseUrl).toString();
+  const jsonLd = buildArticleJsonLd({
+    headline: displayTitle,
+    description: project.summary,
+    url: canonicalUrl,
+    authorName: "Leonid Petrov",
+    inLanguage: locale,
+    keywords: project.tech,
+    about: project.industry,
+  });
+  const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+
+  return (
+    <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-12 text-slate-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString }}
+      />
+      <Link
+        href={`/${locale}#projects`}
+        className="text-sm uppercase tracking-[0.3em] text-slate-400"
+      >
+        {t("caseStudy.back")}
+      </Link>
+      <header className="space-y-4">
+        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+          {project.period} · {project.role}
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-4xl font-semibold text-white">{displayTitle}</h1>
+          {project.anonymous ? (
+            <span className="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-300">
+              {t("caseStudy.confidential")}
+            </span>
+          ) : null}
+        </div>
+        <p className="text-lg text-slate-300">{project.summary}</p>
+        <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
+      </header>
+
+      {project.body.length > 0 ? (
+        <section className="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6">
+          <MarkdownRenderer content={project.body} />
+        </section>
+      ) : null}
+
+      <Section title={t("caseStudy.overview")} items={project.overview} />
+      <Section title={t("caseStudy.outcomes")} items={project.outcomes} />
+      <Section title={t("caseStudy.challenges")} items={project.challenges} />
+
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">{t("caseStudy.stack")}</h2>
+        <div className="flex flex-wrap gap-2 text-xs text-slate-400">
+          {project.tech.map((tech) => (
+            <span key={tech} className="rounded-full border border-slate-800 px-3 py-1">
+              {tech}
+            </span>
+          ))}
+        </div>
+        <ul className="list-disc space-y-2 pl-5 text-slate-300">
+          {project.stackNotes.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      {project.links.length > 0 ? (
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">{t("caseStudy.links")}</h2>
+          <div className="flex flex-wrap gap-3">
+            {project.links.map((link, index) => (
+              <Link
+                key={`${project.slug}-link-${index}`}
+                href={link.href}
+                className="text-slate-300 underline underline-offset-2"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </main>
+  );
+}

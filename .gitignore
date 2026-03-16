@@ -20,6 +20,9 @@ blob-report/
 /.next/
 /out/
 
+# lighthouse
+/.lighthouseci/
+
 # production
 /build
 
@@ -28,6 +31,8 @@ blob-report/
 *.pem
 .cursor/
 .worktrees/
+next-env.d.ts
+test-results/
 
 # debug
 npm-debug.log*

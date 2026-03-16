@@ -9,7 +9,7 @@ origin: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md
 # feat: Senior Frontend Portfolio Site
 
 ## Overview
-Build a bilingual (RU/EN) portfolio site for a Senior Frontend Engineer that quickly communicates value to recruiters and tech leads while demonstrating depth in architecture, performance, accessibility, and DX (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). The site should include 4-6 case studies, an engineering quality section, and a clear primary CTA via email with supporting links to Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). Content can start as placeholders derived from the updated resume and be ready for future expansion (blog/playground) without structural changes (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+Build a bilingual (RU/EN) portfolio site for a Senior Frontend Engineer that quickly communicates value to recruiters and tech leads while demonstrating depth in architecture, performance, accessibility, and DX (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). The site should include 4-6 case studies, an engineering quality section, and a clear primary CTA via email with supporting links to Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md). Content can start as placeholders derived from the updated resume and be ready for future expansion without structural changes (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
 
 ### Research Insights
 - Use App Router nested layouts to keep the shell static and reduce client JS.
@@ -43,9 +43,24 @@ The portfolio needs to balance fast screening for recruiters with technical cred
 ## Proposed Solution
 Create a Next.js App Router site with a hiring-first narrative and a light playful layer, delivered via a clean information architecture. Implement RU/EN localization, SEO metadata (OpenGraph, JSON-LD), and performance-first rendering (RSC by default with minimal client components). Provide flexible content models for projects, experience, and optional content, and a contact CTA centered on email.
 
+## Progress Update (2026-03-16)
+
+### Completed
+- Git-native content system: projects and experience migrated to Markdown with locale fallback.
+- Project detail pages render Markdown bodies for richer case study narratives.
+- Static OG/Twitter image routes remain available without edge-only runtime.
+- Project detail metadata includes locale alternates + Article JSON-LD.
+- Contact form delivery flow with Resend, honeypot, rate limit, and fallback messaging.
+- Lighthouse CI configured for /en and /ru with score budgets.
+- NDA guardrail: anonymous projects require industry in frontmatter.
+- NDA content review checklist added: docs/checklists/nda-content-review.md.
+
+### Remaining
+- None.
+
 ### Research Insights
 - Keep most sections as RSC and isolate interactivity in leaf client components.
-- Use `next-intl` with `app/[locale]` routing and `generateMetadata` per locale.
+- Use `next-international` with `app/[locale]` routing and `generateMetadata` per locale.
 
 ### Edge Cases
 - Missing `hreflang` alternates harms RU/EN SEO.
@@ -54,7 +69,7 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 ### Implementation Notes
 | Decision | Chosen | Alternative | Why Chosen |
 | --- | --- | --- | --- |
-| i18n routing | `app/[locale]` + next-intl | subdomains / next-i18next | Lower deploy complexity and consistent previews |
+| i18n routing | `app/[locale]` + next-international | subdomains / next-i18next | Lower deploy complexity and consistent previews |
 | Content source | Typed TS objects | MDX / CMS | Fast iteration with placeholders and no external deps |
 | Contact backend | Server Action | `/api/contact` route | One surface to audit; avoid duplication |
 | Animation | Motion | CSS-only / GSAP | Reduced-motion support built-in |
@@ -69,7 +84,7 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 
 ## Technical Considerations
 - **Framework/Stack**: Next.js App Router + TypeScript, Tailwind CSS, Motion for animations, optional 3D playground (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- **i18n**: Route segment locales (e.g., `app/[locale]`) with `next-intl` routing, RU/EN alternates in metadata.
+- **i18n**: Route segment locales (e.g., `app/[locale]`) with `next-international` routing, RU/EN alternates in metadata.
 - **SEO**: Metadata API with canonical and `alternates.languages`, OpenGraph image, sitemap/robots, JSON-LD for Person + WebSite.
 - **Performance**: RSC by default; client components only where needed for animation and interaction. Use `next/image` and `next/font` to keep Lighthouse >= 90 (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
 - **Contact**: Server Actions for contact form with basic anti-spam (honeypot + rate limit). Primary CTA email; Telegram as secondary.
@@ -121,16 +136,16 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 - Locale switcher preserves path across RU/EN.
 
 ## Acceptance Criteria
-- [ ] Site renders in RU and EN with locale-specific routing and `hreflang` alternates.
-- [ ] Information architecture includes Hero, About, Experience, Selected Projects, Engineering Quality, Content/Writing, Contact CTA (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] 4-6 case study entries supported with balanced focus (business impact + technical depth), with partial anonymization support (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] Primary CTA is email; secondary links include Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] Lighthouse >= 90 across Performance/Accessibility/Best Practices/SEO on a representative build (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] Metadata includes canonical URL, OpenGraph tags, and JSON-LD for Person + WebSite.
-- [ ] Content placeholders are seeded from resume data and clearly marked for replacement (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
-- [ ] `noindex` is enabled for non-production previews via env flag and disabled for production launch.
-- [ ] Lighthouse CI runs on preview or production URL with mobile and desktop presets.
-- [ ] Contact form uses an explicit provider (Resend) or falls back to `mailto:`.
+- [x] Site renders in RU and EN with locale-specific routing and `hreflang` alternates.
+- [x] Information architecture includes Hero, About, Experience, Selected Projects, Engineering Quality, Content/Writing, Contact CTA (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] 4-6 case study entries supported with balanced focus (business impact + technical depth), with partial anonymization support (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] Primary CTA is email; secondary links include Telegram, GitHub, LinkedIn, and CV (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] Lighthouse >= 90 across Performance/Accessibility/Best Practices/SEO on a representative build (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] Metadata includes canonical URL, OpenGraph tags, and JSON-LD for Person + WebSite.
+- [x] Content placeholders are seeded from resume data and clearly marked for replacement (see brainstorm: docs/brainstorms/2026-03-13-senior-frontend-portfolio-brainstorm.md).
+- [x] `noindex` is enabled for non-production previews via env flag and disabled for production launch.
+- [x] Lighthouse CI runs on preview or production URL with mobile and desktop presets.
+- [x] Contact form uses an explicit provider (Resend) or falls back to `mailto:`.
 
 ### Research Insights
 - Run Lighthouse in CI to avoid regressions and confirm mobile budgets.
@@ -230,8 +245,7 @@ Phase C — Quality Layer (launch gate)
 - Contact form Server Action with anti-spam.
 - Lighthouse CI and remediation.
 
-Phase D — Post-launch slots
-- Blog route scaffold (no nav link until content ready).
+Phase D — Post-launch slot
 - Playground slot (optional).
 
 ### Tests
