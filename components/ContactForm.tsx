@@ -3,16 +3,36 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { submitContact, type ContactState } from "@/app/actions/contact";
-import { useI18n } from "@/locales/client";
 
 const initialState: ContactState = { status: "idle" };
+
+type ContactFormStrings = Readonly<{
+  nameLabel: string;
+  emailLabel: string;
+  messageLabel: string;
+  submit: string;
+  sending: string;
+  or: string;
+  mailto: string;
+  emailAddress: string;
+  success: string;
+  errorSpam: string;
+  errorRate: string;
+  errorInvalid: string;
+  errorSend: string;
+  errorFallback: string;
+  errorMissing: string;
+}>;
+
+type ContactFormProps = Readonly<{
+  strings: ContactFormStrings;
+}>;
 
 /**
  * Submit button that reflects pending form state.
  */
-function SubmitButton() {
+function SubmitButton({ strings }: ContactFormProps) {
   const { pending } = useFormStatus();
-  const t = useI18n();
 
   return (
     <button
@@ -20,7 +40,7 @@ function SubmitButton() {
       disabled={pending}
       className="rounded-full bg-white/90 px-5 py-2 font-semibold text-slate-900 transition hover:bg-white disabled:opacity-60"
     >
-      {pending ? t("contactForm.sending") : t("contactForm.submit")}
+      {pending ? strings.sending : strings.submit}
     </button>
   );
 }
@@ -28,15 +48,14 @@ function SubmitButton() {
 /**
  * Email contact form wired to the submitContact action.
  */
-export default function ContactForm() {
+export default function ContactForm({ strings }: ContactFormProps) {
   const [state, formAction] = useActionState(submitContact, initialState);
-  const t = useI18n();
 
   return (
     <form action={formAction} className="mt-4 grid gap-4">
       <div className="grid gap-3 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-slate-300">
-          {t("contactForm.nameLabel")}
+          {strings.nameLabel}
           <input
             name="name"
             required
@@ -44,7 +63,7 @@ export default function ContactForm() {
           />
         </label>
         <label className="grid gap-2 text-sm text-slate-300">
-          {t("contactForm.emailLabel")}
+          {strings.emailLabel}
           <input
             name="email"
             type="email"
@@ -54,7 +73,7 @@ export default function ContactForm() {
         </label>
       </div>
       <label className="grid gap-2 text-sm text-slate-300">
-        {t("contactForm.messageLabel")}
+        {strings.messageLabel}
         <textarea
           name="message"
           rows={4}
@@ -66,13 +85,13 @@ export default function ContactForm() {
         <input name="company" tabIndex={-1} autoComplete="off" />
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <SubmitButton />
-        <span className="text-sm text-slate-400">{t("contactForm.or")}</span>
+        <SubmitButton strings={strings} />
+        <span className="text-sm text-slate-400">{strings.or}</span>
         <a
-          href={`mailto:${t("cta.email")}`}
+          href={`mailto:${strings.emailAddress}`}
           className="text-sm text-slate-200 underline underline-offset-4"
         >
-          {t("contactForm.mailto")}
+          {strings.mailto}
         </a>
       </div>
       {state.status !== "idle" ? (
@@ -87,18 +106,18 @@ export default function ContactForm() {
           }
         >
           {state.status === "success"
-            ? t("contactForm.success")
+            ? strings.success
             : state.error === "spam"
-              ? t("contactForm.errorSpam")
+              ? strings.errorSpam
               : state.error === "rate"
-                ? t("contactForm.errorRate")
+                ? strings.errorRate
               : state.error === "invalid"
-                ? t("contactForm.errorInvalid")
+                ? strings.errorInvalid
                 : state.error === "send"
-                  ? t("contactForm.errorSend")
+                  ? strings.errorSend
                   : state.error === "fallback"
-                    ? t("contactForm.errorFallback")
-                  : t("contactForm.errorMissing")}
+                    ? strings.errorFallback
+                    : strings.errorMissing}
         </p>
       ) : null}
     </form>

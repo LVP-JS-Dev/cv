@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { I18nProviderClient } from "@/locales/client";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { getStaticParams } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
@@ -94,12 +93,19 @@ export default async function LocaleLayout({
     ? (localeParam as Locale)
     : defaultLocale;
 
+  const messages = await loadMessages(locale);
+  const localeSwitchLabel = messages?.localeSwitch?.label ?? "Language";
+
   return (
-    <I18nProviderClient locale={locale}>
+    <>
       <div className="pointer-events-none fixed right-4 top-4 z-50 md:right-6 md:top-6">
-        <LocaleSwitcher className="pointer-events-auto" />
+        <LocaleSwitcher
+          className="pointer-events-auto"
+          currentLocale={locale}
+          label={localeSwitchLabel}
+        />
       </div>
       {children}
-    </I18nProviderClient>
+    </>
   );
 }

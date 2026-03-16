@@ -3,21 +3,24 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useCurrentLocale, useI18n } from "@/locales/client";
 import { locales, type Locale } from "@/i18n/routing";
 
 type LocaleSwitcherProps = {
   className?: string;
+  currentLocale: Locale;
+  label: string;
 };
 
 /**
  * Locale switcher that keeps the current path, query, and hash.
  */
-export default function LocaleSwitcher({ className }: LocaleSwitcherProps) {
-  const currentLocale = useCurrentLocale();
+export default function LocaleSwitcher({
+  className,
+  currentLocale,
+  label,
+}: LocaleSwitcherProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const t = useI18n();
   const [hash, setHash] = useState("");
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function LocaleSwitcher({ className }: LocaleSwitcherProps) {
 
   return (
     <nav
-      aria-label={t("localeSwitch.label")}
+      aria-label={label}
       className={[
         "flex items-center gap-1 rounded-full border border-slate-800/70 bg-slate-950/70 p-1 text-xs uppercase tracking-[0.2em] text-slate-300 backdrop-blur",
         className,

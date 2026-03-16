@@ -37,6 +37,23 @@ export default async function LocaleHome({
     t("sections.engineeringQualityPoints.two"),
     t("sections.engineeringQualityPoints.three"),
   ];
+  const contactFormStrings = {
+    nameLabel: t("contactForm.nameLabel"),
+    emailLabel: t("contactForm.emailLabel"),
+    messageLabel: t("contactForm.messageLabel"),
+    submit: t("contactForm.submit"),
+    sending: t("contactForm.sending"),
+    or: t("contactForm.or"),
+    mailto: t("contactForm.mailto"),
+    emailAddress: t("cta.email"),
+    success: t("contactForm.success"),
+    errorSpam: t("contactForm.errorSpam"),
+    errorRate: t("contactForm.errorRate"),
+    errorInvalid: t("contactForm.errorInvalid"),
+    errorSend: t("contactForm.errorSend"),
+    errorFallback: t("contactForm.errorFallback"),
+    errorMissing: t("contactForm.errorMissing"),
+  };
   const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
   const baseUrl = rawBaseUrl.replace(/\/+$/, "");
   const canonicalUrl = new URL(`/${locale}`, baseUrl).toString();
@@ -228,7 +245,7 @@ export default async function LocaleHome({
           <h2 className="text-3xl font-semibold text-white">{t("cta.email")}</h2>
         </div>
         <p className="text-sm text-slate-300">{t("contactForm.subtitle")}</p>
-        <ContactForm />
+        <ContactForm strings={contactFormStrings} />
         <div className="flex flex-wrap gap-3 text-sm text-slate-300">
           <Link
             href={contactLinks.telegram}
