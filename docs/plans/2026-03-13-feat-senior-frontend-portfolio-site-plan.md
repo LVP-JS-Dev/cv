@@ -43,6 +43,19 @@ The portfolio needs to balance fast screening for recruiters with technical cred
 ## Proposed Solution
 Create a Next.js App Router site with a hiring-first narrative and a light playful layer, delivered via a clean information architecture. Implement RU/EN localization, SEO metadata (OpenGraph, JSON-LD), and performance-first rendering (RSC by default with minimal client components). Provide flexible content models for projects, experience, and optional content, and a contact CTA centered on email.
 
+## Progress Update (2026-03-16)
+
+### Completed
+- Git-native content system: projects and experience migrated to Markdown with locale fallback.
+- Project detail pages render Markdown bodies for richer case study narratives.
+- Static OG/Twitter image routes remain available without edge-only runtime.
+
+### Remaining
+- Validate SEO completeness (canonical + alternates.languages for RU/EN) and JSON-LD coverage.
+- Contact form delivery flow (provider + anti-spam + error states) and related tests.
+- Lighthouse CI + budget enforcement on both locales.
+- NDA-safe content review checklist and anonymization guardrails.
+
 ### Research Insights
 - Keep most sections as RSC and isolate interactivity in leaf client components.
 - Use `next-international` with `app/[locale]` routing and `generateMetadata` per locale.
