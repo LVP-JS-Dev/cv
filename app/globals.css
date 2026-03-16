@@ -252,26 +252,29 @@ html.spotlight-ready body::before {
 }
 
 .reveal {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-ready .reveal {
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  transition-delay: var(--reveal-delay, 0s);
+  animation: reveal-in 0.6s ease forwards;
+  animation-delay: var(--reveal-delay, 0s);
 }
 
-.reveal-ready .reveal.reveal-visible {
+.reveal-eager {
   opacity: 1;
   transform: translateY(0);
+  animation: none;
+}
+
+@keyframes reveal-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal-ready .reveal {
+  .reveal {
     opacity: 1;
     transform: none;
-    transition: none;
+    animation: none;
   }
 }

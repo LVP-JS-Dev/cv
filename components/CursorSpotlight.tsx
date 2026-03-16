@@ -13,13 +13,17 @@ export default function CursorSpotlight() {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const supportsHover = window.matchMedia("(hover: hover)").matches;
     const hasFinePointer =
       window.matchMedia("(pointer: fine)").matches ||
       window.matchMedia("(any-pointer: fine)").matches;
+    const hasCoarsePointer =
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(any-pointer: coarse)").matches;
 
     const isAutomated = navigator.webdriver && process.env.NODE_ENV === "production";
 
-    if (!hasFinePointer || isAutomated) {
+    if (!supportsHover || (!hasFinePointer && hasCoarsePointer) || isAutomated) {
       root.classList.remove("spotlight-ready");
       root.style.setProperty("--spotlight-opacity", "0");
       return;
