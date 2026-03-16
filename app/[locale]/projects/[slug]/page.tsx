@@ -5,6 +5,7 @@ import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
 import { getI18n } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
+import { buildArticleJsonLd } from "@/lib/structured-data";
 
 type Params = {
   locale: string;
@@ -56,6 +57,12 @@ export async function generateMetadata({
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
   );
   const canonical = new URL(`/${locale}/projects/${slug}`, metadataBase).toString();
+  const languages = Object.fromEntries(
+    locales.map((entry) => [
+      entry,
+      new URL(`/${entry}/projects/${slug}`, metadataBase).toString(),
+    ]),
+  ) as Record<Locale, string>;
 
   if (!project) {
     return { title: t("caseStudy.notFound"), metadataBase };
@@ -71,6 +78,7 @@ export async function generateMetadata({
     metadataBase,
     alternates: {
       canonical,
+      languages,
     },
     openGraph: {
       title,
@@ -104,9 +112,26 @@ export default async function ProjectDetailPage({
   const displayTitle = project.anonymous
     ? `${t("caseStudy.confidential")} · ${project.industry ?? t("caseStudy.title")}`
     : project.title;
+  const rawBaseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+  const baseUrl = rawBaseUrl.replace(/\/+$/, "");
+  const canonicalUrl = new URL(`/${locale}/projects/${project.slug}`, baseUrl).toString();
+  const jsonLd = buildArticleJsonLd({
+    headline: displayTitle,
+    description: project.summary,
+    url: canonicalUrl,
+    authorName: "Leonid Petrov",
+    inLanguage: locale,
+    keywords: project.tech,
+    about: project.industry,
+  });
+  const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 
   return (
     <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-10 px-6 py-12 text-slate-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString }}
+      />
       <Link
         href={`/${locale}#projects`}
         className="text-sm uppercase tracking-[0.3em] text-slate-400"
