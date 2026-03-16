@@ -15,11 +15,14 @@
     "lhci": "npm run lhci:mobile && npm run lhci:desktop"
   },
   "dependencies": {
+    "framer-motion": "^10.12.6",
+    "gray-matter": "^4.0.3",
     "next": "16.1.6",
     "next-international": "^1.3.1",
-    "framer-motion": "^10.12.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",

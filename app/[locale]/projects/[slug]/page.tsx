@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { setStaticParamsLocale } from "next-international/server";
-import { contentProjects } from "@/content/projects";
+import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
 import { getI18n } from "@/locales/server";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 
 type Params = {
   locale: string;
@@ -31,10 +32,9 @@ function Section({ title, items }: SectionProps) {
 /**
  * Prebuilds static project routes based on known project slugs.
  */
-export function generateStaticParams() {
-  return locales.flatMap((locale) =>
-    contentProjects.map((project) => ({ locale, slug: project.slug })),
-  );
+export async function generateStaticParams() {
+  const slugs = await getProjectSlugs();
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
 /**
@@ -51,7 +51,7 @@ export async function generateMetadata({
     : defaultLocale;
   setStaticParamsLocale(locale);
   const t = await getI18n();
-  const project = contentProjects.find((item) => item.slug === slug);
+  const project = await getProjectBySlug(locale, slug);
   const metadataBase = new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
   );
@@ -95,7 +95,7 @@ export default async function ProjectDetailPage({
   }
   setStaticParamsLocale(locale);
   const t = await getI18n();
-  const project = contentProjects.find((item) => item.slug === slug);
+  const project = await getProjectBySlug(locale, slug);
 
   if (!project) {
     notFound();
@@ -128,6 +128,12 @@ export default async function ProjectDetailPage({
         <p className="text-lg text-slate-300">{project.summary}</p>
         <p className="text-sm uppercase tracking-[0.3em] text-slate-400">{project.impact}</p>
       </header>
+
+      {project.body.length > 0 ? (
+        <section className="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6">
+          <MarkdownRenderer content={project.body} />
+        </section>
+      ) : null}
 
       <Section title={t("caseStudy.overview")} items={project.overview} />
       <Section title={t("caseStudy.outcomes")} items={project.outcomes} />

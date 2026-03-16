@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 import { getI18n } from "@/locales/server";
 import Link from "next/link";
-import { contentProjects } from "@/content/projects";
-import { contentExperience } from "@/content/experience";
+import { getExperience, getProjects } from "@/lib/content";
 import { locales, type Locale } from "@/i18n/routing";
 import { setStaticParamsLocale } from "next-international/server";
 import Reveal from "@/components/Reveal";
@@ -60,6 +59,10 @@ export default async function LocaleHome({
     }),
   ];
   const jsonLdString = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+  const [experience, projects] = await Promise.all([
+    getExperience(locale),
+    getProjects(locale),
+  ]);
 
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col gap-14 px-6 py-12 text-slate-100">
@@ -113,7 +116,7 @@ export default async function LocaleHome({
           </Link>
         </div>
         <div className="flex flex-col gap-4">
-          {contentExperience.map((item) => (
+          {experience.map((item) => (
             <article
               key={item.title}
               className="rounded-2xl border border-slate-800/70 bg-slate-900/50 p-6"
@@ -159,7 +162,7 @@ export default async function LocaleHome({
           </Link>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          {contentProjects.map((project) => (
+          {projects.map((project) => (
             <article
               key={project.title}
               className="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-5"
