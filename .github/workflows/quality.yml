@@ -18,7 +18,7 @@ jobs:
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Run Lighthouse CI (mobile + desktop)
         run: npm run lhci
         env:
