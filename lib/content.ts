@@ -145,6 +145,12 @@ const parseProject = (
   content: string,
   filePath: string,
 ): Project => {
+  const anonymous = asBooleanOptional(data.anonymous, "anonymous", filePath);
+  const industry =
+    data.industry === undefined ? undefined : asString(data.industry, "industry", filePath);
+  if (anonymous && !industry) {
+    throw new Error(`Expected "industry" for anonymous project in ${filePath}`);
+  }
   return {
     title: asString(data.title, "title", filePath),
     slug: asString(data.slug, "slug", filePath),
@@ -158,8 +164,8 @@ const parseProject = (
     outcomes: asStringArray(data.outcomes, "outcomes", filePath),
     challenges: asStringArray(data.challenges, "challenges", filePath),
     stackNotes: asStringArray(data.stackNotes, "stackNotes", filePath),
-    industry: data.industry === undefined ? undefined : asString(data.industry, "industry", filePath),
-    anonymous: asBooleanOptional(data.anonymous, "anonymous", filePath),
+    industry,
+    anonymous,
     links: asLinks(data.links, "links", filePath),
     order: asNumberOptional(data.order, "order", filePath),
   };

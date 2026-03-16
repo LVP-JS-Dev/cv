@@ -49,12 +49,13 @@ Create a Next.js App Router site with a hiring-first narrative and a light playf
 - Git-native content system: projects and experience migrated to Markdown with locale fallback.
 - Project detail pages render Markdown bodies for richer case study narratives.
 - Static OG/Twitter image routes remain available without edge-only runtime.
+- Project detail metadata includes locale alternates + Article JSON-LD.
+- Contact form delivery flow with Resend, honeypot, rate limit, and fallback messaging.
+- Lighthouse CI configured for /en and /ru with score budgets.
+- NDA guardrail: anonymous projects require industry in frontmatter.
 
 ### Remaining
-- Validate SEO completeness (canonical + alternates.languages for RU/EN) and JSON-LD coverage.
-- Contact form delivery flow (provider + anti-spam + error states) and related tests.
-- Lighthouse CI + budget enforcement on both locales.
-- NDA-safe content review checklist and anonymization guardrails.
+- NDA-safe content review checklist (manual review pass before publishing).
 
 ### Research Insights
 - Keep most sections as RSC and isolate interactivity in leaf client components.
