@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Geist } from "next/font/google";
-import { defaultLocale } from "@/i18n/routing";
+import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 import CursorSpotlight from "@/components/CursorSpotlight";
 import "./globals.css";
 
@@ -21,8 +22,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerList = await headers();
+  const headerLocale = headerList.get("x-locale");
+  const locale = locales.includes(headerLocale as Locale)
+    ? (headerLocale as Locale)
+    : defaultLocale;
+
   return (
-    <html lang={defaultLocale} className={geist.variable}>
+    <html lang={locale} className={geist.variable}>
       <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
         <CursorSpotlight />
         <div className="sky-container" aria-hidden="true">

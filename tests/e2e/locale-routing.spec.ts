@@ -1,5 +1,31 @@
 import { expect, test } from "@playwright/test";
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const parsedBaseUrl = new URL(baseURL);
+
+test.describe("root redirect", () => {
+  test.use({ locale: "ru-RU" });
+
+  test("redirects root to preferred locale", async ({ page }) => {
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/ru\/?$/);
+  });
+});
+
+test("cookie locale overrides accept-language", async ({ page }) => {
+  await page.context().addCookies([
+    {
+      name: "Next-Locale",
+      value: "ru",
+      domain: parsedBaseUrl.hostname,
+      path: "/",
+    },
+  ]);
+  await page.setExtraHTTPHeaders({ "accept-language": "en" });
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/ru\/?$/);
+});
+
 test("renders correct lang and alternates for EN", async ({ page }) => {
   await page.goto("/en");
   await page.waitForFunction(() => document.documentElement.lang === "en");

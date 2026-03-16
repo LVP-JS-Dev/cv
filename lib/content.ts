@@ -71,10 +71,14 @@ const getLocaleFilePath = async (
   section: "projects" | "experience",
   slug: string,
   locale: Locale,
+  allowFallback = true,
 ) => {
   const localePath = path.join(contentRoot, section, slug, `${locale}.md`);
   if (await fileExists(localePath)) {
     return localePath;
+  }
+  if (!allowFallback) {
+    return null;
   }
   const fallbackPath = path.join(contentRoot, section, slug, `${defaultLocale}.md`);
   if (await fileExists(fallbackPath)) {
@@ -187,6 +191,20 @@ const parseExperience = (data: Record<string, unknown>, filePath: string): Exper
 
 export const getProjectSlugs = cache(async () => {
   return listSlugs("projects");
+});
+
+/**
+ * Returns project slugs that have a markdown file for the given locale.
+ */
+export const getProjectSlugsForLocale = cache(async (locale: Locale) => {
+  const slugs = await listSlugs("projects");
+  const items = await Promise.all(
+    slugs.map(async (slug) => {
+      const filePath = await getLocaleFilePath("projects", slug, locale, false);
+      return filePath ? slug : null;
+    }),
+  );
+  return items.filter(Boolean) as string[];
 });
 
 export const getProjects = cache(async (locale: Locale) => {
