@@ -32,6 +32,33 @@ npm run test:axe
 npm run lhci
 ```
 
+## Required secrets and environment variables
+
+Local development (`.env.local`):
+
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+RESEND_API_KEY=...
+CONTACT_TO=...
+CONTACT_FROM="Portfolio <onboarding@resend.dev>"
+```
+
+GitHub Actions secrets (Repository Settings -> Secrets and variables -> Actions):
+
+Production deploy:
+
+- `NEXT_PUBLIC_SITE_URL` (public production URL, required for sitemap)
+- `DOKPLOY_URL`
+- `DOKPLOY_API_KEY`
+- `DOKPLOY_APPLICATION_ID`
+
+Staging deploy:
+
+- `NEXT_PUBLIC_SITE_URL_STAGING`
+- `DOKPLOY_STAGING_URL`
+- `DOKPLOY_STAGING_API_KEY`
+- `DOKPLOY_STAGING_APPLICATION_ID`
+
 ## Git workflow
 
 - Each feature or fix is developed in its own git worktree.
