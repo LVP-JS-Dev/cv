@@ -39,20 +39,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image name
+        id: image
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          tags: ${{ steps.image.outputs.image }}:${{ github.ref_name }}
 
       - name: Trigger Dokploy update
         run: |
           curl -X POST "${{ secrets.DOKPLOY_URL }}/api/application.update" \
             -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d '{"applicationId":"${{ secrets.DOKPLOY_APPLICATION_ID }}","dockerImage":"ghcr.io/${{ github.repository }}:${{ github.ref_name }}"}'
+            -d '{"applicationId":"${{ secrets.DOKPLOY_APPLICATION_ID }}","dockerImage":"${{ steps.image.outputs.image }}:${{ github.ref_name }}"}'
 
       - name: Trigger Dokploy deploy
         run: |
